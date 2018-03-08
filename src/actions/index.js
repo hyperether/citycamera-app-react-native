@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Actions } from 'react-native-router-flux';
 import { 
     USERNAME_CHANGED,
     EMAIL_CHANGED,
@@ -12,15 +13,15 @@ export const userNameChanged = (text) => {
     return {
         type: USERNAME_CHANGED,
         payload: text
-    }
-}
+    };
+};
 
 export const emailChanged = (text) => {
     return {
         type: EMAIL_CHANGED,
         payload: text //<--novi email koji korisnik kuca
-    }
-}
+    };
+};
 
 export const passwordChanged = (text) => {
     return {
@@ -41,46 +42,31 @@ export const loginUser = ({ userName, password}) => {
           .then(user => {
               dispatch({type: 'LOGIN_USER_SUCCESS', payload: user});
               console.log(user);
+              Actions.chooser();
              })
           .catch((error) => {
-            console.log("Logovanje nije uspelo " + error);
+            console.log("Logovanje nije uspelo: " + error);
           });
         }
+};  
     
-
-
-    
-    
-    //ovako ide preko firebase-a
-    // return (dispatch) => {
-    //     dispatch({type: LOGIN_USER});
-
-    //     firebase.auth().signInWithEmailAndPassword (email, password)
-    //     .then (user => loginUserSuccess(dispatch, user),
-    //         // dispatch({type: LOGIN_USER_SUCCESS, payload: user
-    //     )
-    //     .catch((err) => {
-    //         console.log(err);
-    //         firebase.auth().createUserWithEmailAndPassword (email, password)
-    //         .then (user => {
-    //             loginUserSuccess(dispatch, user);
-    //             console.log('log in succes')
-    //             // dispatch({ type: LOGIN_USER_SUCCESS, payload: user
-    //         })
-    //         .catch((err) => {
-    //             loginUserFail(dispatch);
-    //         });
-    //     })
-    // };
-
-
-
-
-
+export const registerUser = ({ userName, email, password}) => {
+    console.log ({userName, email, password})
+    return (dispatch) => {
+        axios.post('http://mycitycamera.com/user/register', {
+            username: userName,
+            email: email,
+            password: password
+          })
+          .then(user => {
+              dispatch({type: 'REGISTER_USER_SUCCESS', payload: user});
+              console.log(user);  
+              Actions.login();            
+             })
+          .catch((error) => {
+            console.log("Registracija nije uspela: " + error);
+          });
+    };
 };
-
-
-
-
 
 //Action creator preko readux-thunk-a vraca funkciju koja ce se kasnije pozvati preko dispatch - a.

@@ -13,7 +13,6 @@ class LoginForm extends Component {
         this.props.loginUser({userName, password});
     }
 
-
     onUserNameChange(text){
         this.props.userNameChanged(text);
     }
