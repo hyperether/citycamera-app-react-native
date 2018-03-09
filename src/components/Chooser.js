@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const Chooser = () => {
+const Chooser = (props) => {
+    
     return(
         <View>
-            <Text>Ovde treba slike ubaciti i dalje raditi. Srećno :)!</Text>
+            <Text style={{fontSize: 25}}>Welcome {props.dataUserName}.</Text>
         </View>
     )}
 

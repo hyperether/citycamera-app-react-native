@@ -5,5 +5,6 @@ import {
     LOGIN_USER,
     SIGN_UP_USER_SUCCESS,
     SIGN_UP_USER_FAIL,
-    SIGN_UP_USER
+    SIGN_UP_USER,
+    REGISTER_USER_SUCCESS,
 } from './types'

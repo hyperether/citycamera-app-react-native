@@ -1,12 +1,14 @@
 import axios from 'axios';
 import { Actions } from 'react-native-router-flux';
+import { AsyncStorage } from 'react-native';
 import { 
     USERNAME_CHANGED,
     EMAIL_CHANGED,
     PASSWORD_CHANGED,
     LOGIN_USER,
     LOGIN_USER_SUCCESS,
-    LOGIN_USER_FAIL 
+    LOGIN_USER_FAIL ,
+    AUTH_SET_TOKEN
 } from './types';
 
 export const userNameChanged = (text) => {
@@ -30,6 +32,8 @@ export const passwordChanged = (text) => {
     };
 };
 
+
+
 export const loginUser = ({ userName, password}) => {
     console.log({userName, password})
     return (dispatch) => {
@@ -41,8 +45,10 @@ export const loginUser = ({ userName, password}) => {
           })
           .then(user => {
               dispatch({type: 'LOGIN_USER_SUCCESS', payload: user});
-              console.log(user);
-              Actions.chooser();
+              AsyncStorage.setItem('user', JSON.stringify(user.data));  
+              
+              //prosledi u chooser scenu props-e. Na ovaj nacin se bira sta ce biti prikazano na sledecoj sceni.
+              Actions.chooser({dataUserName: user.data.user.username});
              })
           .catch((error) => {
             console.log("Logovanje nije uspelo: " + error);
@@ -60,7 +66,7 @@ export const registerUser = ({ userName, email, password}) => {
           })
           .then(user => {
               dispatch({type: 'REGISTER_USER_SUCCESS', payload: user});
-              console.log(user);  
+              console.log('sucess register',user);  
               Actions.login();            
              })
           .catch((error) => {
@@ -70,3 +76,4 @@ export const registerUser = ({ userName, email, password}) => {
 };
 
 //Action creator preko readux-thunk-a vraca funkciju koja ce se kasnije pozvati preko dispatch - a.
+

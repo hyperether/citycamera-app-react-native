@@ -1,7 +1,8 @@
 import {
      USERNAME_CHANGED,
      EMAIL_CHANGED,
-     PASSWORD_CHANGED 
+     PASSWORD_CHANGED, 
+     AUTH_SET_TOKEN
     } from '../actions/types'
 
 const INITIAL_STATE = { //<---default podesavanja. Prazni stringovi.
@@ -24,6 +25,7 @@ export default (state = INITIAL_STATE, action) => {
         case PASSWORD_CHANGED:
             return {...state, password: action.payload};
     
+
         default:
             return state;
     };
