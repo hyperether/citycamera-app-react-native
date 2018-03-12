@@ -12,8 +12,6 @@ const INITIAL_STATE = { //<---default podesavanja. Prazni stringovi.
 
 export default (state = INITIAL_STATE, action) => {
 
-    console.log(action);
-
     switch (action.type) {
        
         case USERNAME_CHANGED:

@@ -90,7 +90,8 @@ render() {
       <Footer />
     </View>
 
-  );}
+  );
+  }
 }
 
 
