@@ -4,31 +4,40 @@ import { Actions, Scene, Router } from 'react-native-router-flux';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import Chooser from './components/Chooser';
+import AddPhoto from './components/AddPhoto';
 
 const RouterComponent = () => {
     console.log("Ruter")
-    
+
     return (
         <Router>
-            <Scene key = 'root'>
-                <Scene 
+            <Scene key = 'root' hideNavBar>
+                <Scene
                     key = 'login'
                     title = 'Welcome to CityCam'
                     component = {LoginForm}
                     initial
                 />
 
-                <Scene 
+                <Scene
                     key = 'signup'
-                    title = 'Please signup'                
+                    title = 'Please signup'
                     component = {SignupForm}
                 />
 
-                <Scene 
-                    key = 'chooser'
-                    title = 'Choose what to do'
-                    component = {Chooser}
-                />
+                <Scene key="main">
+                  <Scene
+                      key = 'chooser'
+                      title = 'Create a new post'
+                      component = {Chooser}
+                      initial
+                  />
+                  <Scene
+                    key = "addPhoto"
+                    title = "Add a photo"
+                    component = {AddPhoto}
+                  />
+                </Scene>
             </Scene>
         </Router>
     );
