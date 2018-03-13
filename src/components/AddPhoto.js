@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity, AsyncStorage, ToastAndroid } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
 class AddPhoto extends Component {
+
 
   launchImagePicker(){
     var options = {
@@ -13,26 +14,34 @@ class AddPhoto extends Component {
     };
 
     ImagePicker.launchImageLibrary(options,(response) => {
-      console.log('Response = ', response);
+      try {
+      AsyncStorage.getItem('user')
+      .then((err, user) => {
+        ToastAndroid.show('Loaded User !' + user, ToastAndroid.LONG);
 
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      }
-      else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      }
-      else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      }
-      else {
-        let source = { uri: response.uri };
-
-        this.setState({
-          avatarSource: source
-        });
-      }
-    })
-  };
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        }
+        else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        }
+        else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+        }
+        else {
+          let source = { uri: response.uri };
+  
+          this.setState({
+            avatarSource: source
+          });
+        }
+      })
+    } catch (error) {
+      console.log(error);
+    }
+    
+  });
+};
 
   launchCamera(){
     var options = {
@@ -47,7 +56,7 @@ class AddPhoto extends Component {
     };
 
     ImagePicker.launchCamera(options,(response) => {
-      console.log('Response = ', response);
+      console.log('Response = ', AsyncStorage.getItem('user'), response);
 
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -68,7 +77,7 @@ class AddPhoto extends Component {
     })
   }
   
-
+  
   render(){
     const {
       mainContainerStyle,
@@ -113,6 +122,16 @@ class AddPhoto extends Component {
     );
   };
 };
+var userObject = {
+  user:{
+
+  },
+
+  image:{
+
+  }
+}
+
 
 const styles = {
   mainContainerStyle: {

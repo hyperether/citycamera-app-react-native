@@ -8,6 +8,12 @@ import OverlayChooserItem from './OverlayChooserItem';
 
 class Chooser extends Component {
 
+  constructor(props){
+    super(props);
+    //user data prosledjen iz login forme
+    console.log(this.props.userData);
+  }
+
   renderItem(type, isTouchable) {
     switch (type) {
       case "photo":

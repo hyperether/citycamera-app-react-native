@@ -1,6 +1,7 @@
-import axios from 'axios';
+import API from '../services/API';
+import Session from '../services/Session';
 import { Actions } from 'react-native-router-flux';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, ToastAndroid } from 'react-native';
 import { 
     USERNAME_CHANGED,
     EMAIL_CHANGED,
@@ -8,7 +9,6 @@ import {
     LOGIN_USER,
     LOGIN_USER_SUCCESS,
     LOGIN_USER_FAIL ,
-    AUTH_SET_TOKEN
 } from './types';
 
 export const userNameChanged = (text) => {
@@ -36,19 +36,32 @@ export const passwordChanged = (text) => {
 
 export const loginUser = ({ userName, password}) => {
     console.log({userName, password})
+
     return (dispatch) => {
         // disptach({type: LOGIN_USER});
 
-        axios.post('http://mycitycamera.com/user/login', {
-            username: userName,
-            password: password
-          })
-          .then(user => {
-              dispatch({type: 'LOGIN_USER_SUCCESS', payload: user});
-              AsyncStorage.setItem('user', JSON.stringify(user.data));  
+        API.login(userName,password)
+          .then(response => {
+              dispatch({type: 'LOGIN_USER_SUCCESS', payload: response});
+              console.log('Response is ', response);
               
-              //prosledi u chooser scenu props-e. Na ovaj nacin se bira sta ce biti prikazano na sledecoj sceni.
-              Actions.chooser({dataUserName: user.data.user.username});
+              try {
+                AsyncStorage.setItem('user', JSON.stringify(response.data.user))
+                
+                .then(() => {
+                    AsyncStorage.setItem('token', JSON.stringify(response.data.token))
+                    .then(() => {
+                        Session.save(response.data.user, response.data.token);
+                        console.log(Session.isAuth());
+                        Actions.chooser({userData: response.data.user});
+                    });
+                })
+                .catch(() => {
+                    console.log('Greska prilikom snimanja korisnika.');
+                });  
+              } catch(error){
+                  console.log(error);
+              }
              })
           .catch((error) => {
             console.log("Logovanje nije uspelo: " + error);
@@ -59,11 +72,7 @@ export const loginUser = ({ userName, password}) => {
 export const registerUser = ({ userName, email, password}) => {
     console.log ({userName, email, password})
     return (dispatch) => {
-        axios.post('http://mycitycamera.com/user/register', {
-            username: userName,
-            email: email,
-            password: password
-          })
+          API.register(userName,email, password)
           .then(user => {
               dispatch({type: 'REGISTER_USER_SUCCESS', payload: user});
               console.log('sucess register',user);  
