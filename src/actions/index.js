@@ -8,7 +8,8 @@ import {
     PASSWORD_CHANGED,
     LOGIN_USER,
     LOGIN_USER_SUCCESS,
-    LOGIN_USER_FAIL ,
+    LOGIN_USER_FAIL, 
+    POST_IMAGE_ADDED,
 } from './types';
 
 export const userNameChanged = (text) => {
@@ -85,4 +86,12 @@ export const registerUser = ({ userName, email, password}) => {
 };
 
 //Action creator preko readux-thunk-a vraca funkciju koja ce se kasnije pozvati preko dispatch - a.
-
+//------------Post Actions --------------------
+//akciju treba povezati sa reducerom preko POST_IMAGE_ADDED
+export const imageAdded = (image) => {
+    return {
+        type: POST_IMAGE_ADDED,
+        payload: image,
+    }
+    // Actions.addDescription();
+}

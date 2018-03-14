@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import { View, Image, TouchableOpacity, AsyncStorage, ToastAndroid } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import { imageAdded } from '../actions';
 
 class AddPhoto extends Component {
 
@@ -30,10 +32,13 @@ class AddPhoto extends Component {
         }
         else {
           let source = { uri: response.uri };
-  
-          this.setState({
-            avatarSource: source
-          });
+          
+          // this.props.image = source;
+          this.props.imageAdded(source);
+
+          // this.setState({
+          //   avatarSource: source
+          // });
         }
       })
     } catch (error) {
@@ -169,4 +174,10 @@ const styles = {
   }
 }
 
-export default AddPhoto;
+const mapStateToProps = state => {
+  return {
+    image: state.post.image,
+  }
+}
+
+export default connect (mapStateToProps,{imageAdded})(AddPhoto);

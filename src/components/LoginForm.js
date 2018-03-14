@@ -92,7 +92,7 @@ const styles = {
 
 const mapStateToProps = state => {
     return {
-        userName: state.auth.userName,
+        userName: state.auth.userName, //<--iz AuthReducer-a
         password: state.auth.password
     }
 }

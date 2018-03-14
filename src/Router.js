@@ -5,6 +5,7 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import Chooser from './components/Chooser';
 import AddPhoto from './components/AddPhoto';
+import AddDescription from './components/AddDescription';
 
 const RouterComponent = () => {
     console.log("Ruter")
@@ -36,6 +37,11 @@ const RouterComponent = () => {
                     key = "addPhoto"
                     title = "Add a photo"
                     component = {AddPhoto}
+                  />
+                  <Scene
+                    key = "addDescription"
+                    title = "Add description"
+                    component = {AddDescription}
                   />
                 </Scene>
             </Scene>

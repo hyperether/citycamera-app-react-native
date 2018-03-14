@@ -15,7 +15,7 @@ export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
        
         case USERNAME_CHANGED:
-            return {...state, userName: action.payload}; // <--napravi novi objekat, uzmi sve propertije iz state objekata i ubaci ih u novi objekat. Zatim uzmi actio.payload prop i ubaci ga na pocetak (ako vec postoji, pregazi ga.)
+            return {...state, userName: action.payload}; // <--napravi novi objekat, uzmi sve propertije iz state objekata i ubaci ih u novi objekat. Zatim uzmi action.payload prop i ubaci ga na pocetak (ako vec postoji, pregazi ga.)
         
         case EMAIL_CHANGED:
             return {...state, email: action.payload};
