@@ -30,7 +30,7 @@ class LoginForm extends Component {
                         label="Username:"
                         style={{height: 40, width: 100}} 
                         onChangeText={this.onUserNameChange.bind(this)}  
-                        value={this.props.userName} //<-- iz mapStateToPropsa                      
+                        value={this.props.userName} //<-- iz mapStateToPropsa(iz reducera)                      
                     />
                 </CardSection>
                 
@@ -89,7 +89,8 @@ const styles = {
     }
 
 }
-
+//mapStateToProps helper služi za komunikaciju iz reducera u komponentu, tj da vratimo properti koji hoćemo iz
+//reducera i komponentu.
 const mapStateToProps = state => {
     return {
         userName: state.auth.userName, //<--iz AuthReducer-a
