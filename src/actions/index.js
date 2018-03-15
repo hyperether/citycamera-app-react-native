@@ -10,6 +10,7 @@ import {
     LOGIN_USER_SUCCESS,
     LOGIN_USER_FAIL, 
     POST_IMAGE_ADDED,
+    POST_DESCRIPTION_ADDED
 } from './types';
 
 export const userNameChanged = (text) => {
@@ -93,5 +94,14 @@ export const imageAdded = (image) => {
         type: POST_IMAGE_ADDED,
         payload: image,
     }
+}
+
+
+export const descriptionAdded = (description) => {
+    return {
+        type: POST_DESCRIPTION_ADDED,
+        payload: description,
+    }
     // Actions.addDescription();
 }
+

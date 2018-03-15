@@ -1,21 +1,47 @@
 import React, {Component} from 'react';
-import { View, Image, TouchableOpacity, AsyncStorage, ToastAndroid } from 'react-native';
+import { connect } from 'react-redux';
+import { 
+  View, 
+  Image, 
+  TouchableOpacity, 
+  AsyncStorage, 
+  ToastAndroid,
+  TextInput
+} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import { descriptionAdded } from '../actions';
 
 class AddDescription extends Component {
 
   render(){
     const {
-      mainContainerStyle,
-      imageContainerStyle,
-      largeImageStyle,
+      menuItemsContainerStyle,
+      textInputStyle,
       buttonsContainer,
-      smallImageStyle,
-      touchableStyle
+      touchableStyle,
+      smallImageStyle
     } = styles;
     return (
-      <View style={mainContainerStyle}>
-       <Text>Description</Text>
+      <View 
+        style={menuItemsContainerStyle}>
+          <TextInput 
+            multiline={true}
+            numberOfLines={10}
+            placeholder={'Enter your description here.'}
+            style={textInputStyle}
+          />
+        <View style={buttonsContainer}>
+          <TouchableOpacity 
+            style={touchableStyle}
+              // onPress={this.launchCamera.bind(this)}
+              >
+              <Image
+                style={smallImageStyle}
+                source={require('../assets/images/yes1.png')}
+                // resizeMode='contain'
+              />
+            </TouchableOpacity>            
+          </View>
       </View>
     );
   };
@@ -23,39 +49,49 @@ class AddDescription extends Component {
 
 
 const styles = {
-  mainContainerStyle: {
-    backgroundColor: '#cdf6f7',
+  
+  menuItemsContainerStyle: {
     flex: 1,
-    paddingVertical: 50,
-    paddingHorizontal: 50
-  },
-  imageContainerStyle: {
-    flex: 4,
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'flex-end',
-    alignContent: 'center',
-    paddingVertical: 20
-  },
-  largeImageStyle: {
-    height: 200,
-    width: 230,
-    alignSelf: 'center'
   },
   buttonsContainer: {
     flex:1,
     paddingVertical: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignContent: 'flex-start'
+    justifyContent: 'center',
+    alignContent: 'flex-start',
   },
+  
   touchableStyle:{
     paddingHorizontal: 20
   },
+  
   smallImageStyle: {
     height: 50,
     width: 100,
     alignSelf: 'center'
+  },
+
+  textInputStyle: {
+    flex: 3,
+    borderWidth: 1,
+    borderColor: '#66f6f9',
+    backgroundColor: '#cdf6f7',
+    borderRadius: 7,
+    marginHorizontal: 3,
+    marginVertical: 3,
+    alignItems: 'center',
+    fontSize: 24,
   }
 }
 
-export default AddDescription;
+const mapStateToProps = state => {
+  return {
+    description: state.post.description,
+  }
+}
+
+export default connect (mapStateToProps,{descriptionAdded})(AddDescription);

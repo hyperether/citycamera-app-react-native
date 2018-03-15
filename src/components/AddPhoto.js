@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
 import { View, Image, TouchableOpacity, AsyncStorage, ToastAndroid } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { imageAdded } from '../actions';
@@ -35,6 +36,7 @@ class AddPhoto extends Component {
           
           // this.props.image = source;
           this.props.imageAdded(source);
+          Actions.chooser();
 
           // this.setState({
           //   avatarSource: source
@@ -127,16 +129,6 @@ class AddPhoto extends Component {
     );
   };
 };
-var userObject = {
-  user:{
-
-  },
-
-  image:{
-
-  }
-}
-
 
 const styles = {
   mainContainerStyle: {

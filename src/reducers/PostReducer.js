@@ -7,7 +7,7 @@ import {
 
 const INITIAL_STATE = {
     image:'',
-    descritpion:'',
+    description:'',
     location:'',
     sent: false
 };

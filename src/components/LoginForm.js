@@ -90,7 +90,7 @@ const styles = {
 
 }
 //mapStateToProps helper služi za komunikaciju iz reducera u komponentu, tj da vratimo properti koji hoćemo iz
-//reducera i komponentu.
+//reducera u komponentu.
 const mapStateToProps = state => {
     return {
         userName: state.auth.userName, //<--iz AuthReducer-a

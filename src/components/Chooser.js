@@ -5,13 +5,18 @@ import { Footer } from './common';
 import ImageMenuItem from './ImageMenuItem';
 import TouchableMenuItem from './TouchableMenuItem';
 import OverlayChooserItem from './OverlayChooserItem';
+import { connect } from 'react-redux';
+import { imageAdded, descriptionAdded } from '../actions'
+
 
 class Chooser extends Component {
 
   constructor(props){
     super(props);
+
     //user data prosledjen iz login forme
-    console.log(this.props.userData);
+    console.log("User data: ", this.props.userData);
+    console.log("Image", this.props.image);
   }
 
   renderItem(type, isTouchable) {
@@ -42,12 +47,12 @@ class Chooser extends Component {
             <ImageMenuItem imagePath={require('../assets/images/location_pressed.png')} />
           );
         }
-      case "about":
+      case "description":
         if (isTouchable) {
           return(
             <TouchableMenuItem
               imagePath={require('../assets/images/about.png')}
-              //onPress={() => Actions.addDescription()}
+              onPress={() => Actions.addDescription()}
             />
             );
         } else {
@@ -86,17 +91,18 @@ render() {
         <OverlayChooserItem imagePath={require('../assets/images/square.png')} />
         <View style={menuRowStyle}>
           {this.renderItem("photo", true)}
-          {this.renderItem("location", false)}
+          {this.renderItem("location", this.props.image)}
         </View>
         <View style={menuRowStyle}>
-          {this.renderItem("about", false)}
-          {this.renderItem("send", false)}
+          {this.renderItem("description", this.props.image)}
+          {this.renderItem("send", this.props.image && this.props.location)}
         </View>
       </View>
       <Footer />
     </View>
 
   );
+  
   }
 }
 
@@ -106,7 +112,6 @@ render() {
         flex: 1,
         zIndex: 0
       },
-
       menuItemsContainerStyle: {
         flex: 1,
         paddingVertical: 15,
@@ -124,4 +129,12 @@ render() {
       }
     }
 
-export default Chooser;
+const mapStateToProps = state => {
+  return {
+    image: state.post.image,
+    description: state.post.description,
+    location: state.post.location
+  }
+}
+
+export default connect (mapStateToProps, { imageAdded, descriptionAdded })(Chooser);
