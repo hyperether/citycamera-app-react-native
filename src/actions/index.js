@@ -2,15 +2,16 @@ import API from '../services/API';
 import Session from '../services/Session';
 import { Actions } from 'react-native-router-flux';
 import { AsyncStorage, ToastAndroid } from 'react-native';
-import { 
+import {
     USERNAME_CHANGED,
     EMAIL_CHANGED,
     PASSWORD_CHANGED,
     LOGIN_USER,
     LOGIN_USER_SUCCESS,
-    LOGIN_USER_FAIL, 
+    LOGIN_USER_FAIL,
     POST_IMAGE_ADDED,
-    POST_DESCRIPTION_ADDED
+    POST_DESCRIPTION_ADDED,
+    POST_LOCATION_ADDED
 } from './types';
 
 export const userNameChanged = (text) => {
@@ -46,10 +47,10 @@ export const loginUser = ({ userName, password}) => {
           .then(response => {
               dispatch({type: 'LOGIN_USER_SUCCESS', payload: response});
               console.log('Response is ', response);
-              
+
               try {
                 AsyncStorage.setItem('user', JSON.stringify(response.data.user))
-                
+
                 .then(() => {
                     AsyncStorage.setItem('token', JSON.stringify(response.data.token))
                     .then(() => {
@@ -60,7 +61,7 @@ export const loginUser = ({ userName, password}) => {
                 })
                 .catch(() => {
                     console.log('Greska prilikom snimanja korisnika.');
-                });  
+                });
               } catch(error){
                   console.log(error);
               }
@@ -69,16 +70,16 @@ export const loginUser = ({ userName, password}) => {
             console.log("Logovanje nije uspelo: " + error);
           });
         }
-};  
-    
+};
+
 export const registerUser = ({ userName, email, password}) => {
     console.log ({userName, email, password})
     return (dispatch) => {
           API.register(userName,email, password)
           .then(user => {
               dispatch({type: 'REGISTER_USER_SUCCESS', payload: user});
-              console.log('sucess register',user);  
-              Actions.login();            
+              console.log('sucess register',user);
+              Actions.login();
              })
           .catch((error) => {
             console.log("Registracija nije uspela: " + error);
@@ -105,3 +106,9 @@ export const descriptionAdded = (description) => {
     // Actions.addDescription();
 }
 
+export const addLocation = (position) => {
+  return {
+    type: POST_LOCATION_ADDED,
+    payload: position
+  }
+}

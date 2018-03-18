@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
+import { addLocation } from '../actions';
 
 const INITIAL_LONGITUDE_DELTA = 0.0421;
 const INITIAL_LATITUDE_DELTA = 0.0922;
@@ -12,6 +15,7 @@ class AddLocation extends Component {
   constructor() {
       super();
       this.state = {
+        isMounted: false,
         region: {
           latitude: 45.2640,
           longitude: 19.8309,
@@ -22,6 +26,7 @@ class AddLocation extends Component {
     }
 
     componentDidMount() {
+      this.setState({ isMounted: true });
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
@@ -52,27 +57,78 @@ class AddLocation extends Component {
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
+    this.setState({ isMounted: false });
+  }
+
+  saveLocation() {
+    const { latitude, longitude } = this.state.region;
+    const position = { latitude, longitude };
+    this.props.addLocation(position);
+    Actions.pop();
+  }
+
+  onLongPress(newPosition) {
+    if(this.state.isMounted) {
+      this.setState({ region: {
+        latitude: newPosition.nativeEvent.coordinate.latitude,
+        longitude: newPosition.nativeEvent.coordinate.longitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      }});
+    }
   }
 
 render() {
   return (
     <View style={styles.mainContainerStyle}>
+      <View
+        style={styles.mapContainerStyle}
+      >
       <MapView
         provider={ PROVIDER_GOOGLE }
-        style={ styles.mainContainerStyle }
+        style={ styles.mapStyle }
         showsUserLocation
+        onLongPress={(newPosition) => this.onLongPress(newPosition)}
         region={ this.state.region }
         onRegionChangeComplete={ region => this.setState({region}) }
       >
         <MapView.Marker
           coordinate={ this.state.region }
-          draggable
-          onDragEnd={(e) => this.setState({ region: {
-            latitude: e.nativeEvent.coordinate.latitude,
-            longitude: e.nativeEvent.coordinate.longitude}})}
+          pinColor='#e23d14'
         />
       </MapView>
-      <Text>Address</Text>
+      </View>
+      <View
+      style={styles.addressContainerStyle}
+      >
+        <Text
+          style={styles.addressTextStyle}
+        >
+          {this.state.region.latitude} {this.state.region.longitude}
+        </Text>
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity
+            style={styles.touchableStyle}
+            onPress={this.saveLocation.bind(this)}
+            >
+            <Image
+              source={require('../assets/images/yes1.png')}
+              style={styles.smallImageStyle}
+              resizeMode='contain'
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.touchableStyle}
+            onPress={() => Actions.pop()}
+            >
+            <Image
+              source={require('../assets/images/no1.png')}
+              style={styles.smallImageStyle}
+              resizeMode='contain'
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
 
 
@@ -87,7 +143,7 @@ const styles = StyleSheet.create({
     padding: 5
   },
   mapContainerStyle: {
-    position: 'absolute',
+    flex: 6,
     top: 0,
     left: 0,
     right: 0,
@@ -102,6 +158,29 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
+  buttonsContainer: {
+    flex:1,
+    paddingTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignContent: 'flex-start'
+  },
+  touchableStyle:{
+    paddingHorizontal: 20
+  },
+  smallImageStyle: {
+    height: 30,
+    width: 70,
+    alignSelf: 'center'
+  },
+  addressContainerStyle: {
+    flex: 1
+  },
+  addressTextStyle: {
+    fontSize: 18,
+    color: 'black',
+    paddingStart: 15
+  }
 });
 
-export default AddLocation;
+export default connect(null, {addLocation})(AddLocation);

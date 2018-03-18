@@ -95,7 +95,7 @@ render() {
         </View>
         <View style={menuRowStyle}>
           {this.renderItem("description", this.props.image)}
-          {this.renderItem("send", this.props.image && this.props.location)}
+          {this.renderItem("send", this.props.image && this.props.latitude && this.props.longitude)}
         </View>
       </View>
       <Footer />
