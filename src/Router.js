@@ -6,6 +6,7 @@ import SignupForm from './components/SignupForm';
 import Chooser from './components/Chooser';
 import AddPhoto from './components/AddPhoto';
 import AddDescription from './components/AddDescription';
+import AddLocation from './components/AddLocation';
 
 const RouterComponent = () => {
     console.log("Ruter")
@@ -39,10 +40,15 @@ const RouterComponent = () => {
                     component = {AddPhoto}
                   />
                   <Scene
+                    key = "addLocation"
+                    title = "Select a location"
+                    component = {AddLocation}
+                  />
+                  <Scene
                     key = "addDescription"
                     title = "Add description"
                     component = {AddDescription}
-                    
+
                   />
                 </Scene>
             </Scene>

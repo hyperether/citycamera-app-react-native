@@ -39,7 +39,7 @@ class Chooser extends Component {
           return(
             <TouchableMenuItem
               imagePath={require('../assets/images/location.png')}
-              //onPress={() => Actions.addLocation()}
+              onPress={() => Actions.addLocation()}
             />
             );
         } else {
@@ -91,7 +91,7 @@ render() {
         <OverlayChooserItem imagePath={require('../assets/images/square.png')} />
         <View style={menuRowStyle}>
           {this.renderItem("photo", true)}
-          {this.renderItem("location", this.props.image)}
+          {this.renderItem("location", true)}
         </View>
         <View style={menuRowStyle}>
           {this.renderItem("description", this.props.image)}
@@ -102,7 +102,7 @@ render() {
     </View>
 
   );
-  
+
   }
 }
 
