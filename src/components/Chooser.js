@@ -91,7 +91,7 @@ render() {
         <OverlayChooserItem imagePath={require('../assets/images/square.png')} />
         <View style={menuRowStyle}>
           {this.renderItem("photo", true)}
-          {this.renderItem("location", true)}
+          {this.renderItem("location", this.props.image)}
         </View>
         <View style={menuRowStyle}>
           {this.renderItem("description", this.props.image)}
@@ -133,7 +133,8 @@ const mapStateToProps = state => {
   return {
     image: state.post.image,
     description: state.post.description,
-    location: state.post.location
+    longitude: state.post.longitude,
+    latitude: state.post.latitude
   }
 }
 

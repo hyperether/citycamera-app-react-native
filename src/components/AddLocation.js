@@ -79,14 +79,24 @@ class AddLocation extends Component {
   }
 
 render() {
+  const {
+    mainContainerStyle,
+    mapContainerStyle,
+    mapStyle,
+    confirmContainerStyle,
+    confirmationTextStyle,
+    buttonsContainer,
+    touchableStyle,
+    smallImageStyle
+  } = styles;
   return (
-    <View style={styles.mainContainerStyle}>
+    <View style={mainContainerStyle}>
       <View
-        style={styles.mapContainerStyle}
+        style={mapContainerStyle}
       >
       <MapView
         provider={ PROVIDER_GOOGLE }
-        style={ styles.mapStyle }
+        style={mapStyle}
         showsUserLocation
         onLongPress={(newPosition) => this.onLongPress(newPosition)}
         region={ this.state.region }
@@ -99,31 +109,27 @@ render() {
       </MapView>
       </View>
       <View
-      style={styles.addressContainerStyle}
+      style={confirmContainerStyle}
       >
-        <Text
-          style={styles.addressTextStyle}
-        >
-          {this.state.region.latitude} {this.state.region.longitude}
-        </Text>
-        <View style={styles.buttonsContainer}>
+        <Text style={confirmationTextStyle}>Confirm selected location?</Text>
+        <View style={buttonsContainer}>
           <TouchableOpacity
-            style={styles.touchableStyle}
+            style={touchableStyle}
             onPress={this.saveLocation.bind(this)}
             >
             <Image
               source={require('../assets/images/yes1.png')}
-              style={styles.smallImageStyle}
+              style={smallImageStyle}
               resizeMode='contain'
             />
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.touchableStyle}
+            style={touchableStyle}
             onPress={() => Actions.pop()}
             >
             <Image
               source={require('../assets/images/no1.png')}
-              style={styles.smallImageStyle}
+              style={smallImageStyle}
               resizeMode='contain'
             />
           </TouchableOpacity>
@@ -173,10 +179,10 @@ const styles = StyleSheet.create({
     width: 70,
     alignSelf: 'center'
   },
-  addressContainerStyle: {
+  confirmContainerStyle: {
     flex: 1
   },
-  addressTextStyle: {
+  confirmationTextStyle: {
     fontSize: 18,
     color: 'black',
     paddingStart: 15

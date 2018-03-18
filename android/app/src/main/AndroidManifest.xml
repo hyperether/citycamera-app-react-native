@@ -13,6 +13,7 @@
       android:icon="@mipmap/ic_launcher"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
+//TODO replace the Google API key with the production version
       <meta-data
         android:name="com.google.android.geo.API_KEY"
         android:value="AIzaSyBCqBiWv1piCxKqwequuzUCIDESJXjkUN8"/>
