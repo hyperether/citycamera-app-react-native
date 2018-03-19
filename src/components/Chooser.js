@@ -39,7 +39,7 @@ class Chooser extends Component {
           return(
             <TouchableMenuItem
               imagePath={require('../assets/images/location.png')}
-              //onPress={() => Actions.addLocation()}
+              onPress={() => Actions.addLocation()}
             />
             );
         } else {
@@ -95,14 +95,14 @@ render() {
         </View>
         <View style={menuRowStyle}>
           {this.renderItem("description", this.props.image)}
-          {this.renderItem("send", this.props.image && this.props.location)}
+          {this.renderItem("send", this.props.image && this.props.latitude && this.props.longitude)}
         </View>
       </View>
       <Footer />
     </View>
 
   );
-  
+
   }
 }
 
@@ -133,7 +133,8 @@ const mapStateToProps = state => {
   return {
     image: state.post.image,
     description: state.post.description,
-    location: state.post.location
+    longitude: state.post.longitude,
+    latitude: state.post.latitude
   }
 }
 
