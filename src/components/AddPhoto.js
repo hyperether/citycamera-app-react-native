@@ -11,16 +11,21 @@ import {
 import ImagePicker from "react-native-image-picker";
 import { imageAdded } from "../actions";
 
+
 class AddPhoto extends Component {
-  constructor (){
-    super();
+  constructor(props) {
+    super(props) 
     this.state = {
-      image: {
-        imagePath: '',
-        imageExtension: ''
-      }
+      imageExtension: ''
     }
   }
+  getImageExtension(imagePath){
+    let position = imagePath.indexOf(".")+1
+    let extension = imagePath.substring(position);
+    if (position > -1) {
+      this.setState({imageExtension: extension});
+    }
+  };
 
   launchImagePicker() {
     var options = {
@@ -46,6 +51,8 @@ class AddPhoto extends Component {
             // console.log("Android putanja ",response.path);
             // console.log("IOS putanja ",response.origURL); <-- pogledati dokuementaciju.
             this.props.imageAdded(source);
+            this.getImageExtension(response.path)
+            console.log("ekstenzija je ", this.state)
             Actions.pop();
 
             // this.setState({
@@ -80,14 +87,14 @@ class AddPhoto extends Component {
         console.log("User tapped custom button: ", response.customButton);
       } else {
         let source = { path: response.path };
-
         this.props.imageAdded(source);
+        this.getImageExtension(response.path)
         Actions.pop();
         // this.setState({
         // avatarSource: source
         // });
       }
-    });
+    }); 
   }
 
   render() {
@@ -173,7 +180,7 @@ const styles = {
 
 const mapStateToProps = state => {
   return {
-    imagePath: state.post.image
+    image: state.post.image
     
   };
 };
