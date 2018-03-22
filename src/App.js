@@ -11,7 +11,6 @@ import Router from './Router';
 class App extends Component{
 
     render(){
-        // console.log(this.state.logedIn)
         //ReduxThunk je midlevare zato smo ubacili apply middleware i ubacili ovo ispod kako bismo imali dodatne opcije na store-u
         return (
             <Provider store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}>

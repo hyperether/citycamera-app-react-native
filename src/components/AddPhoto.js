@@ -1,56 +1,65 @@
-import React, {Component} from 'react';
-import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
-import { View, Image, TouchableOpacity, AsyncStorage, ToastAndroid } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
-import { imageAdded } from '../actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Actions } from "react-native-router-flux";
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  AsyncStorage,
+  ToastAndroid
+} from "react-native";
+import ImagePicker from "react-native-image-picker";
+import { imageAdded } from "../actions";
 
 class AddPhoto extends Component {
+  constructor (){
+    super();
+    this.state = {
+      image: {
+        imagePath: '',
+        imageExtension: ''
+      }
+    }
+  }
 
-
-  launchImagePicker(){
+  launchImagePicker() {
     var options = {
       storageOptions: {
         skipBackup: true,
-        path: 'images'
+        path: "images"
       }
     };
 
-    ImagePicker.launchImageLibrary(options,(response) => {
+    ImagePicker.launchImageLibrary(options, response => {
       try {
-      AsyncStorage.getItem('user')
-      .then((err, user) => {
-        ToastAndroid.show('Loaded User !' + user, ToastAndroid.LONG);
+        AsyncStorage.getItem("user").then((err, user) => {
+          // ToastAndroid.show('Loaded User !' + user, ToastAndroid.LONG);
 
-        if (response.didCancel) {
-          console.log('User cancelled image picker');
-        }
-        else if (response.error) {
-          console.log('ImagePicker Error: ', response.error);
-        }
-        else if (response.customButton) {
-          console.log('User tapped custom button: ', response.customButton);
-        }
-        else {
-          let source = { uri: response.uri };
-          
-          // this.props.image = source;
-          this.props.imageAdded(source);
-          Actions.chooser();
+          if (response.didCancel) {
+            console.log("User cancelled image picker");
+          } else if (response.error) {
+            console.log("ImagePicker Error: ", response.error);
+          } else if (response.customButton) {
+            console.log("User tapped custom button: ", response.customButton);
+          } else {
+            let source = { path: response.path };
+            // console.log("Android putanja ",response.path);
+            // console.log("IOS putanja ",response.origURL); <-- pogledati dokuementaciju.
+            this.props.imageAdded(source);
+            Actions.pop();
 
-          // this.setState({
-          //   avatarSource: source
-          // });
-        }
-      })
-    } catch (error) {
-      console.log(error);
-    }
-    
-  });
-};
+            // this.setState({
+            //   avatarSource: source
+            // });
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  }
 
-  launchCamera(){
+  launchCamera() {
     var options = {
       // title: 'Select Avatar',
       // customButtons: [
@@ -58,34 +67,30 @@ class AddPhoto extends Component {
       // ],
       storageOptions: {
         skipBackup: true,
-        path: 'images'
+        path: "images"
       }
     };
 
-    ImagePicker.launchCamera(options,(response) => {
-      console.log('Response = ', AsyncStorage.getItem('user'), response);
-
+    ImagePicker.launchCamera(options, response => {
       if (response.didCancel) {
-        console.log('User cancelled image picker');
-      }
-      else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      }
-      else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      }
-      else {
-        let source = { uri: response.uri };
+        console.log("User cancelled image picker");
+      } else if (response.error) {
+        console.log("ImagePicker Error: ", response.error);
+      } else if (response.customButton) {
+        console.log("User tapped custom button: ", response.customButton);
+      } else {
+        let source = { path: response.path };
 
-        this.setState({
-          avatarSource: source
-        });
+        this.props.imageAdded(source);
+        Actions.pop();
+        // this.setState({
+        // avatarSource: source
+        // });
       }
-    })
+    });
   }
-  
-  
-  render(){
+
+  render() {
     const {
       mainContainerStyle,
       imageContainerStyle,
@@ -98,78 +103,79 @@ class AddPhoto extends Component {
       <View style={mainContainerStyle}>
         <View style={imageContainerStyle}>
           <Image
-            source={require('../assets/images/photo.png')}
+            source={require("../assets/images/photo.png")}
             style={largeImageStyle}
-            resizeMode = 'contain'
+            resizeMode="contain"
           />
         </View>
         <View style={buttonsContainer}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={touchableStyle}
             onPress={this.launchCamera.bind(this)}
-            >
+          >
             <Image
-              source={require('../assets/images/camera.png')}
+              source={require("../assets/images/camera.png")}
               style={smallImageStyle}
-              resizeMode='contain'
+              resizeMode="contain"
             />
           </TouchableOpacity>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={touchableStyle}
             onPress={this.launchImagePicker.bind(this)}
-            >
+          >
             <Image
-              source={require('../assets/images/loading.png')}
+              source={require("../assets/images/loading.png")}
               style={smallImageStyle}
-              resizeMode='contain'
+              resizeMode="contain"
             />
           </TouchableOpacity>
         </View>
       </View>
     );
-  };
-};
+  }
+}
 
 const styles = {
   mainContainerStyle: {
-    backgroundColor: '#cdf6f7',
+    backgroundColor: "#cdf6f7",
     flex: 1,
     paddingVertical: 50,
     paddingHorizontal: 50
   },
   imageContainerStyle: {
     flex: 4,
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    alignContent: 'center',
+    justifyContent: "center",
+    alignItems: "flex-end",
+    alignContent: "center",
     paddingVertical: 20
   },
   largeImageStyle: {
     height: 200,
     width: 230,
-    alignSelf: 'center'
+    alignSelf: "center"
   },
   buttonsContainer: {
-    flex:1,
+    flex: 1,
     paddingVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignContent: 'flex-start'
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "flex-start"
   },
-  touchableStyle:{
+  touchableStyle: {
     paddingHorizontal: 20
   },
   smallImageStyle: {
     height: 50,
     width: 100,
-    alignSelf: 'center'
+    alignSelf: "center"
   }
-}
+};
 
 const mapStateToProps = state => {
   return {
-    image: state.post.image,
-  }
-}
+    imagePath: state.post.image
+    
+  };
+};
 
-export default connect (mapStateToProps,{imageAdded})(AddPhoto);
+export default connect(mapStateToProps, { imageAdded })(AddPhoto);

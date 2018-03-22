@@ -97,13 +97,11 @@ export const imageAdded = (image) => {
     }
 }
 
-
 export const descriptionAdded = (description) => {
     return {
         type: POST_DESCRIPTION_ADDED,
         payload: description,
     }
-    // Actions.addDescription();
 }
 
 export const addLocation = (position) => {

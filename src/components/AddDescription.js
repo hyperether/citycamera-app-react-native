@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
 import { 
   View, 
   Image, 
@@ -13,6 +14,14 @@ import { descriptionAdded } from '../actions';
 
 class AddDescription extends Component {
 
+  onDescritpionAdded(text){
+    this.props.descriptionAdded(text)
+  };
+
+  // onButtonPress(){
+  //   this.props.onDescriptionAdded({this.props})
+  // }
+
   render(){
     const {
       menuItemsContainerStyle,
@@ -21,6 +30,7 @@ class AddDescription extends Component {
       touchableStyle,
       smallImageStyle
     } = styles;
+    
     return (
       <View 
         style={menuItemsContainerStyle}>
@@ -28,12 +38,14 @@ class AddDescription extends Component {
             multiline={true}
             numberOfLines={10}
             placeholder={'Enter your description here.'}
+            onChangeText={this.onDescritpionAdded.bind(this)}
+            value={this.props.description}
             style={textInputStyle}
           />
         <View style={buttonsContainer}>
           <TouchableOpacity 
             style={touchableStyle}
-              // onPress={this.launchCamera.bind(this)}
+              onPress={()=> {Actions.pop(); console.log('description state: ', this.props.description)}}
               >
               <Image
                 style={smallImageStyle}
