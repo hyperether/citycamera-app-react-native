@@ -21,7 +21,7 @@ class Chooser extends Component {
 
   onSendPress(){
     //Podaci prosledjeni iz redux-a
-    console.log("User data: ", this.props.userData);
+    console.log("User data id: ", this.props.userData._id);
     console.log("Image name:", this.props.imageName);    
     console.log("Image path:", this.props.imagePath);
     console.log("Image extension:", this.props.imageExtension);
