@@ -9,23 +9,22 @@ import {
   ToastAndroid
 } from "react-native";
 import ImagePicker from "react-native-image-picker";
-import { imageAdded } from "../actions";
-
+import { imageAdded, imageExtensionAdded } from "../actions";
 
 class AddPhoto extends Component {
   constructor(props) {
-    super(props) 
+    super(props);
     this.state = {
-      imageExtension: ''
-    }
+      imageExtension: ""
+    };
   }
-  getImageExtension(imagePath){
-    let position = imagePath.indexOf(".")+1
+  getImageExtension(imagePath) {
+    let position = imagePath.indexOf(".") + 1;
     let extension = imagePath.substring(position);
     if (position > -1) {
-      this.setState({imageExtension: extension});
+      this.setState({ imageExtension: extension });
     }
-  };
+  }
 
   launchImagePicker() {
     var options = {
@@ -47,12 +46,18 @@ class AddPhoto extends Component {
           } else if (response.customButton) {
             console.log("User tapped custom button: ", response.customButton);
           } else {
-            let source = { path: response.path };
+            this.getImageExtension(response.path)
+            let source = { 
+              path: response.path,
+              name: response.fileName, 
+              extension: this.state.imageExtension
+            };
             // console.log("Android putanja ",response.path);
             // console.log("IOS putanja ",response.origURL); <-- pogledati dokuementaciju.
+            this.getImageExtension(response.path);
             this.props.imageAdded(source);
-            this.getImageExtension(response.path)
-            console.log("ekstenzija je ", this.state)
+            
+            // this.props.imageExtensionAdded(this.state.imageExtension);
             Actions.pop();
 
             // this.setState({
@@ -87,14 +92,17 @@ class AddPhoto extends Component {
         console.log("User tapped custom button: ", response.customButton);
       } else {
         let source = { path: response.path };
-        this.props.imageAdded(source);
-        this.getImageExtension(response.path)
+        this.props.imageAdded(source); //--saljemo image u action imageAdded
+        this.getImageExtension(response.path);
+
+        this.props.imageExtensionAdded(this.state.path);
+        
         Actions.pop();
         // this.setState({
         // avatarSource: source
         // });
       }
-    }); 
+    });
   }
 
   render() {
@@ -181,8 +189,7 @@ const styles = {
 const mapStateToProps = state => {
   return {
     image: state.post.image
-    
   };
 };
 
-export default connect(mapStateToProps, { imageAdded })(AddPhoto);
+export default connect(mapStateToProps, { imageAdded, imageExtensionAdded })(AddPhoto);

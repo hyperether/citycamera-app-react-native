@@ -45,7 +45,7 @@ class AddDescription extends Component {
         <View style={buttonsContainer}>
           <TouchableOpacity 
             style={touchableStyle}
-              onPress={()=> {Actions.pop(); console.log('description state: ', this.props.description)}}
+              onPress={()=> {Actions.pop()}}
               >
               <Image
                 style={smallImageStyle}
