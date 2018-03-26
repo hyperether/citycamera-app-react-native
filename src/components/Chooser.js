@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, ToastAndroid } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { Footer } from "./common";
 import ImageMenuItem from "./ImageMenuItem";
@@ -19,6 +19,16 @@ class Chooser extends Component {
 
   constructor(props) {
     super(props);
+  }
+
+  resetAllStates(){
+    //TO-DO - napraviti novi action i type koji će sve stateove podesiti na prazan string
+    // this.props.imageName = '';
+    // this.props.imagePath = '';    
+    // this.props.imageExtension = '';    
+    // this.props.description = '';
+    // this.props.longitude = '';
+    // this.props.latitude = '';
   }
 
   onSendPress(){
@@ -48,9 +58,12 @@ class Chooser extends Component {
       xhr.onreadystatechange = function(err) {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
-            console.log("Successfully uploaded the file.") 
+            // console.log("Successfully uploaded the file.");
+            ToastAndroid.show("Successfully uploaded the file.", ToastAndroid.LONG);            
           } else {
-            console.log("The file could not be uploaded.") 
+            // console.log("The file could not be uploaded.");
+            ToastAndroid.show("The file could not be uploaded.", ToastAndroid.LONG);            
+             
           }
         }
       }
@@ -61,7 +74,9 @@ class Chooser extends Component {
         uri: 'file://'+this.props.imagePath, 
         name: fileId 
       })
-    })
+    }) .then (()=>{
+          this.resetAllStates();
+        })
   }
 
   renderItem(type, isTouchable) {

@@ -9,7 +9,7 @@ import {
   ToastAndroid
 } from "react-native";
 import ImagePicker from "react-native-image-picker";
-import { imageAdded, imageExtensionAdded } from "../actions";
+import { imageAdded } from "../actions";
 
 class AddPhoto extends Component {
   constructor(props) {
@@ -57,7 +57,6 @@ class AddPhoto extends Component {
             this.getImageExtension(response.path);
             this.props.imageAdded(source);
             
-            // this.props.imageExtensionAdded(this.state.imageExtension);
             Actions.pop();
 
             // this.setState({
@@ -95,11 +94,10 @@ class AddPhoto extends Component {
         this.props.imageAdded(source); //--saljemo image u action imageAdded
         this.getImageExtension(response.path);
 
-        this.props.imageExtensionAdded(this.state.path);
+        this.getImageExtension(response.path);
+        this.props.imageAdded(source);
         
         Actions.pop();
-        // this.setState({
-        // avatarSource: source
         // });
       }
     });
@@ -192,4 +190,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { imageAdded, imageExtensionAdded })(AddPhoto);
+export default connect(mapStateToProps, { imageAdded })(AddPhoto);
