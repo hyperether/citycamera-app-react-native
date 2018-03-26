@@ -12,6 +12,8 @@ import {
   descriptionAdded,
   addLocation 
   } from "../actions";
+import API from "../services/API";
+import Session from "../services/Session";
 
 class Chooser extends Component {
 
@@ -28,6 +30,38 @@ class Chooser extends Component {
     console.log("Description:", this.props.description);
     console.log("Longitude: ", this.props.longitude);
     console.log("Latitude: ", this.props.latitude); 
+    console.log("User je:", Session.getUser());
+   
+    var uploadURL, fileId;
+   
+    API.getUploadURL(
+      this.props.imageName, 
+      this.props.imageExtension,
+      this.props.description, 
+      {long: this.props.longitude, lat: this.props.lat}
+    ).then (response => {
+      uploadURL = response.data.url;
+      fileId = response.data.fileId;
+      // console.log("Odgovor je ", uploadURL)
+    }).then(()=>{
+      const xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function(err) {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            console.log("Successfully uploaded the file.") 
+          } else {
+            console.log("The file could not be uploaded.") 
+          }
+        }
+      }
+      xhr.open('PUT', uploadURL)
+      // xhr.setRequestHeader('X-Amz-ACL', 'public-read')
+      xhr.setRequestHeader('Content-Type', this.props.imageExtension)
+      xhr.send({ 
+        uri: 'file://'+this.props.imagePath, 
+        name: fileId 
+      })
+    })
   }
 
   renderItem(type, isTouchable) {

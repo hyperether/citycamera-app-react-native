@@ -7,8 +7,8 @@ var token = null;
 class Session  {
 
 	static save(tempUser, tempToken){
-		user = user;
-		token = token;
+		user = tempUser;
+		token = tempToken;
 	}
 
 	static delete(){
@@ -26,6 +26,10 @@ class Session  {
 
 	static isAuth(){
 		return user && token;
+	}
+
+	static getUser(){
+		return user;
 	}
 
 	static getUserId(){

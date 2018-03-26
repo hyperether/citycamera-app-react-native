@@ -40,7 +40,7 @@ export const loginUser = ({ userName, password }) => {
   console.log({ userName, password });
 
   return dispatch => {
-    // disptach({type: LOGIN_USER});
+    // disptach({type: LOGIN_USER});cs
 
     API.login(userName, password)
       .then(response => {
@@ -55,8 +55,9 @@ export const loginUser = ({ userName, password }) => {
                 "token",
                 JSON.stringify(response.data.token)
               ).then(() => {
+                console.log('User login data saved in storage');
                 Session.save(response.data.user, response.data.token);
-                console.log(Session.isAuth());
+                console.log('User session',Session.getUser());
                 Actions.chooser({ userData: response.data.user });
               });
             })
