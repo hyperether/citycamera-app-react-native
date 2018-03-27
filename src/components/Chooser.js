@@ -7,6 +7,7 @@ import TouchableMenuItem from "./TouchableMenuItem";
 import OverlayChooserItem from "./OverlayChooserItem";
 import { connect } from "react-redux";
 import { 
+  loginUser,
   imageAdded, 
   imageExtensionAdded, 
   descriptionAdded,
@@ -16,14 +17,31 @@ import {
 import API from "../services/API";
 import Session from "../services/Session";
 
+
 class Chooser extends Component {
 
   constructor(props) {
     super(props);
   }
 
+  logOutAlert(){
+    Alert.alert(
+      'Log Out',
+      'Do you want to log out?',
+      [
+        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Yes', onPress: () => console.log('OK Pressed')},
+      ],
+      { cancelable: false }
+    )
+  }
+
+  logOut(){
+    this.props.loginUser({})
+  }
+
   resetAllStates(){
-    this.props.postSent({}); //<-- saljemo nove podatke u actions a posle u reducer.
+    this.props.postSent({}); //<-- saljemo nove podatke u actions a posle u reducer i na kraju u state.
 
     console.log("User data id: ", this.props.userData._id);
     console.log("Image name:", this.props.imageName);    
@@ -216,6 +234,7 @@ const mapStateToProps = state => { //<-- da bi prisli nekom od ovih propseva kuc
 };
 
 export default connect(mapStateToProps, {
+  loginUser,
   imageAdded,
   descriptionAdded,
   addLocation,
