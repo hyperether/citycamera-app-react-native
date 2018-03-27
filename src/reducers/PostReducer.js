@@ -36,7 +36,14 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case POST_SENT:
-      return { ...state, sent: action.payload };
+      return { ...state, 
+        imagePath: action.payload.path,
+        imageExtension: action.payload.extension,
+        imageName: action.payload.name,
+        description: action.payload.description,
+        latitude: action.payload.latitude,
+        longitude: action.payload.longitude
+       };
 
     default:
       return state;

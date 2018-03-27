@@ -10,7 +10,8 @@ import {
   imageAdded, 
   imageExtensionAdded, 
   descriptionAdded,
-  addLocation 
+  addLocation ,
+  postSent
   } from "../actions";
 import API from "../services/API";
 import Session from "../services/Session";
@@ -22,13 +23,16 @@ class Chooser extends Component {
   }
 
   resetAllStates(){
-    //TO-DO - napraviti novi action i type koji će sve stateove podesiti na prazan string
-    // this.props.imageName = '';
-    // this.props.imagePath = '';    
-    // this.props.imageExtension = '';    
-    // this.props.description = '';
-    // this.props.longitude = '';
-    // this.props.latitude = '';
+    this.props.postSent({}); //<-- saljemo nove podatke u actions a posle u reducer.
+
+    console.log("User data id: ", this.props.userData._id);
+    console.log("Image name:", this.props.imageName);    
+    console.log("Image path:", this.props.imagePath);
+    console.log("Image extension:", this.props.imageExtension);
+    console.log("Description:", this.props.description);
+    console.log("Longitude: ", this.props.longitude);
+    console.log("Latitude: ", this.props.latitude); 
+    console.log("User je:", Session.getUser());
   }
 
   onSendPress(){
@@ -214,5 +218,6 @@ const mapStateToProps = state => { //<-- da bi prisli nekom od ovih propseva kuc
 export default connect(mapStateToProps, {
   imageAdded,
   descriptionAdded,
-  addLocation
+  addLocation,
+  postSent
 })(Chooser);
