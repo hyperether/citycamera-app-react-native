@@ -15,7 +15,7 @@ import {
   POST_IMAGE_EXTENSION_ADDED,
   POST_SENT
 } from "./types";
-import Chooser from "../components/Chooser";
+import PostCreator from "../components/PostCreator";
 
 export const userNameChanged = text => {
   return {
@@ -47,7 +47,6 @@ export const loginUser = ({ userName, password }) => {
     API.login(userName, password)
       .then(response => {
         dispatch({ type: "LOGIN_USER_SUCCESS", payload: response });
-        console.log("Response is ", response);
 
         try {
           AsyncStorage.setItem("user", JSON.stringify(response.data.user))
@@ -60,11 +59,7 @@ export const loginUser = ({ userName, password }) => {
                 console.log('User login data saved in storage');
                 Session.save(response.data.user, response.data.token);
                 console.log('User session',Session.getUser());
-                Actions.chooser(
-                  { 
-                    userData: response.data.user,
-                  }
-                );
+                Actions.postCreator();            
               });
             })
             .catch(() => {

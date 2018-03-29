@@ -3,29 +3,29 @@ import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
 import { Actions, Scene, Router, NavBar } from "react-native-router-flux";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
-import Chooser from "./components/Chooser";
+import a from "./components/a";
 import AddPhoto from "./components/AddPhoto";
 import AddDescription from "./components/AddDescription";
 import AddLocation from "./components/AddLocation";
+import PostCreator from "./components/PostCreator";
 
 const RouterComponent = () => {
-  console.log("Ruter");
 
 // za menjanje back dugmeta
-	const renderBackButton = () => {
-    return (
-        <TouchableOpacity
-				//TODO - logOutAlert
-            onPress={() => {}}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Image
-                    source={require('./assets/images/back_chevron.png')}
-                    resizeMode={'contain'}/>
-                {/* <Text>Back</Text> */}
-            </View>
-        </TouchableOpacity>
-    );
-};
+	// const renderBackButton = () => {
+  //   return (
+  //       <TouchableOpacity
+	// 			//TODO - logOutAlert
+  //           onPress={() => {}}>
+  //           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+  //               <Image
+  //                   source={require('./assets/images/back_chevron.png')}
+  //                   resizeMode={'contain'}/>
+  //               {/* <Text>Back</Text> */}
+  //           </View>
+  //       </TouchableOpacity>
+    // );
+// };
 
   return (
     <Router>
@@ -46,11 +46,9 @@ const RouterComponent = () => {
 
         {/* <Scene key="main"> */}
           <Scene						
-            key="chooser"
+            key="postCreator"
             title="Create a new post"
-						component={Chooser}
-						renderBackButton={() => renderBackButton()}
-            // initial
+						component={PostCreator}
           />
 					<Scene 
 						key="addPhoto" 

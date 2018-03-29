@@ -1,49 +1,45 @@
 import React, { Component } from "react";
-import { View, ToastAndroid } from "react-native";
+import { View, ToastAndroid, Text } from "react-native";
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
 import { Actions } from "react-native-router-flux";
-import { Footer } from "./common";
 import ImageMenuItem from "./ImageMenuItem";
+import { Footer } from "./common";
 import TouchableMenuItem from "./TouchableMenuItem";
 import OverlayChooserItem from "./OverlayChooserItem";
-import { connect } from "react-redux";
-import { 
-  loginUser,
-  imageAdded, 
-  imageExtensionAdded, 
-  descriptionAdded,
-  addLocation ,
-  postSent
-  } from "../actions";
 import API from "../services/API";
 import Session from "../services/Session";
+import {loginUser, imageAdded, descriptionAdded, addLocation, postSent} from "../actions";
 
 
-class Chooser extends Component {
-
+class PostCreator extends Component {
   constructor(props) {
     super(props);
+    console.log("props je", props)
+    console.log('login user', this.props.loginUser)
   }
 
-  logOutAlert(){
-    Alert.alert(
-      'Log Out',
-      'Do you want to log out?',
-      [
-        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Yes', onPress: () => console.log('OK Pressed')},
-      ],
-      { cancelable: false }
-    )
-  }
+  // logOutAlert(){
+  //   Alert.alert(
+  //     'Log Out',
+  //     'Do you want to log out?',
+  //     [
+  //       {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+  //       {text: 'Yes', onPress: () => console.log('OK Pressed')},
+  //     ],
+  //     { cancelable: false }
+  //   )
+  // }
 
-  logOut(){
-    this.props.loginUser({})
-  }
+  // logOut(){
+  //   this.props.loginUser({})
+  // }
 
   resetAllStates(){
-    this.props.postSent({}); //<-- saljemo nove podatke u actions a posle u reducer i na kraju u state.
+    // console.log("reset all states, this props ", this.pros)
+    // saljemo nove podatke u actions a posle u reducer i na kraju u state.
+    this.props.imageAdded({}); 
 
-    console.log("User data id: ", this.props.userData._id);
     console.log("Image name:", this.props.imageName);    
     console.log("Image path:", this.props.imagePath);
     console.log("Image extension:", this.props.imageExtension);
@@ -55,7 +51,6 @@ class Chooser extends Component {
 
   onSendPress(){
     //Podaci prosledjeni iz redux-a
-    console.log("User data id: ", this.props.userData._id);
     console.log("Image name:", this.props.imageName);    
     console.log("Image path:", this.props.imagePath);
     console.log("Image extension:", this.props.imageExtension);
@@ -63,29 +58,30 @@ class Chooser extends Component {
     console.log("Longitude: ", this.props.longitude);
     console.log("Latitude: ", this.props.latitude); 
     console.log("User je:", Session.getUser());
-   
+  
     var uploadURL, fileId;
-   
+  
     API.getUploadURL(
       this.props.imageName, 
       this.props.imageExtension,
       this.props.description, 
-      {long: this.props.longitude, lat: this.props.lat}
+      {long: this.props.longitude, lat: this.props.lat},
     ).then (response => {
       uploadURL = response.data.url;
       fileId = response.data.fileId;
       // console.log("Odgovor je ", uploadURL)
     }).then(()=>{
       const xhr = new XMLHttpRequest()
-      xhr.onreadystatechange = function(err) {
+      xhr.onreadystatechange = (err) => {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
             // console.log("Successfully uploaded the file.");
             ToastAndroid.show("Successfully uploaded the file.", ToastAndroid.LONG);            
+            this.resetAllStates();
           } else {
             // console.log("The file could not be uploaded.");
             ToastAndroid.show("The file could not be uploaded.", ToastAndroid.LONG);            
-             
+            
           }
         }
       }
@@ -96,9 +92,7 @@ class Chooser extends Component {
         uri: 'file://'+this.props.imagePath, 
         name: fileId 
       })
-    }) .then (()=>{
-          this.resetAllStates();
-        })
+    }) 
   }
 
   renderItem(type, isTouchable) {
@@ -197,9 +191,9 @@ class Chooser extends Component {
       </View>
     );
   }
-}
+  }
 
-const styles = {
+  const styles = {
   mainContainerStyle: {
     flex: 1,
     zIndex: 0
@@ -219,24 +213,26 @@ const styles = {
     flexDirection: "row",
     zIndex: 2
   }
-};
-
-
-const mapStateToProps = state => { //<-- da bi prisli nekom od ovih propseva kucamo this.props.imagePath, npr
-  return {
-    imagePath: state.post.imagePath,
-    imageName: state.post.imageName,
-    imageExtension: state.post.imageExtension,
-    description: state.post.description,
-    longitude: state.post.longitude,
-    latitude: state.post.latitude
   };
-};
 
-export default connect(mapStateToProps, {
-  loginUser,
-  imageAdded,
-  descriptionAdded,
-  addLocation,
-  postSent
-})(Chooser);
+  //<-- da bi prisli nekom od ovih propseva kucamo this.props.imagePath, npr
+  const mapDispatchToProps = dispatch => {
+    return{
+      imageAdded: bindActionCreators(imageAdded, dispatch),
+      descriptionAdded: bindActionCreators(descriptionAdded, dispatch)
+    }
+  }
+
+  const mapStateToProps = state => { 
+    return {
+      imagePath: state.post.imagePath,
+      imageName: state.post.imageName,
+      imageExtension: state.post.imageExtension,
+      description: state.post.description,
+      longitude: state.post.longitude,
+      latitude: state.post.latitude
+    };
+  };
+
+
+export default connect (mapStateToProps, mapDispatchToProps)(PostCreator);

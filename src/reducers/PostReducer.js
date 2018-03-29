@@ -17,10 +17,11 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case POST_IMAGE_ADDED:
+    console.log('POST_IMAGE_ADDED', action);
       return {...state, 
-        imagePath: action.payload.path,
-        imageExtension: action.payload.extension,
-        imageName: action.payload.name
+        imagePath: action.payload.path ? action.payload.path : '',
+        imageExtension: action.payload.extension ? action.payload.extension : '',
+        imageName: action.payload.name ? action.payload.name : ''
        };
    
 
