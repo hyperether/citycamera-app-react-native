@@ -1,101 +1,115 @@
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import { connect } from 'react-redux';
-import { userNameChanged, passwordChanged, loginUser } from '../actions';
-import { Actions } from 'react-native-router-flux';
-import { Button, Card, CardSection, Input, Spinner } from './common';
+import React, { Component } from "react";
+import { View, Text } from "react-native";
+import { connect } from "react-redux";
+import { userNameChanged, passwordChanged, loginUser } from "../actions";
+import { Actions } from "react-native-router-flux";
+import { Button, Card, CardSection, Input, Spinner } from "./common";
 
 class LoginForm extends Component {
+  //odlučuje da li će spiner ili dugme biti u card section-u
+  onButtonPress() {
+    const { userName, password } = this.props;
+    this.props.loginUser({ userName, password });
+  }
 
-    //odlučuje da li će spiner ili dugme biti u card section-u
-    onButtonPress(){
-        const {userName, password} = this.props;
-        this.props.loginUser({userName, password});
+  onUserNameChange(text) {
+    this.props.userNameChanged(text);
+  }
+
+  onPasswordChange(text) {
+    this.props.passwordChanged(text);
+  }
+
+  renderError(){
+    if (this.props.error){
+      return (
+        <View style = {{backgroundColor: 'white'}}>
+          <Text style={styles.errorTextStyle}>
+              {this.props.error}
+          </Text>
+        </View>
+      )
+  }
+}
+
+  renderLogInButton() {
+    if (this.props.loading) {
+      return <Spinner size="large" />;
     }
+    return <Button whenPressed={this.onButtonPress.bind(this)}>Login</Button>;
+  }
 
-    onUserNameChange(text){
-        this.props.userNameChanged(text);
-    }
+  render() {
+    return (
+      <Card>
+        <CardSection>
+          <Input
+            placeholder="Username"
+            label="Username:"
+            style={{ height: 40, width: 100 }}
+            onChangeText={this.onUserNameChange.bind(this)}
+            value={this.props.userName} //<-- iz mapStateToPropsa(iz reducera)
+          />
+        </CardSection>
 
-    onPasswordChange(text){
-        this.props.passwordChanged(text);
-    }
+        <CardSection>
+          <Input
+            secureTextEntry
+            placeholder="Password"
+            label="Password:"
+            style={{ height: 40, width: 100 }}
+            onChangeText={this.onPasswordChange.bind(this)}
+            value={this.props.password} //<-- iz mapStateToPropsa
+          />
+        </CardSection>
 
-    render (){
-        return (
-            <Card>
-                <CardSection>
-                    <Input 
-                        placeholder="Username"
-                        label="Username:"
-                        style={{height: 40, width: 100}} 
-                        onChangeText={this.onUserNameChange.bind(this)}  
-                        value={this.props.userName} //<-- iz mapStateToPropsa(iz reducera)                      
-                    />
-                </CardSection>
-                
-                <CardSection>                
-                    <Input 
-                        secureTextEntry                                    
-                        placeholder="Password"
-                        label="Password:"
-                        style={{height: 40, width: 100}}     
-                        onChangeText={this.onPasswordChange.bind(this)} 
-                        value={this.props.password}  //<-- iz mapStateToPropsa                  
-                    />
+        {this.renderError()}
 
-                </CardSection>
+        <CardSection>
+          {this.renderLogInButton()}
+        </CardSection>
 
-                <Text style={styles.errorTextStyle}>
-                 {/* {this.state.error} */}
-                </Text>
-
-                <CardSection>
-                    <Button whenPressed={this.onButtonPress.bind(this)}>
-                        Login
-                    </Button>
-                </CardSection>
-
-                <CardSection >
-                    <Text 
-                        style={styles.signUpTextStyle}
-                        onPress={Actions.signup}
-                    >
-                        Register
-                    </Text>
-                </CardSection>
-
-            </Card>
-        );
-    }
-};
+        <CardSection>
+          <Text style={styles.signUpTextStyle} onPress={Actions.signup}>
+            Register
+          </Text>
+        </CardSection>
+      </Card>
+    );
+  }
+}
 
 const styles = {
-    errorTextStyle: {
-        fontSize: 20,
-        alignSelf: 'center',
-        color: 'red'
-    },
+  errorTextStyle: {
+    fontSize: 20,
+    alignSelf: "center",
+    color: "red"
+  },
 
-    buttonViewStyle: {
-        flex: 1,
-        height:60
-    },
+  buttonViewStyle: {
+    flex: 1,
+    height: 60
+  },
 
-    signUpTextStyle: {
-        flexDirection: 'row',
-        alignItems:'center',
-        color: 'blue'
-    }
-
-}
+  signUpTextStyle: {
+    flexDirection: "row",
+    alignItems: "center",
+    color: "blue"
+  }
+};
 //mapStateToProps helper služi za komunikaciju iz reducera u komponentu, tj da vratimo properti koji hoćemo iz
 //reducera u komponentu.
 const mapStateToProps = state => {
-    return {
-        userName: state.auth.userName, //<--iz AuthReducer-a
-        password: state.auth.password
-    }
-}
+  return {
+    userName: state.auth.userName, //<--iz AuthReducer-a
+    password: state.auth.password,
+    error: state.auth.error,
+    loading: state.auth.loading
+  };
+};
 
-export default connect(mapStateToProps,{userNameChanged, passwordChanged, loginUser})(LoginForm);
+export default connect(mapStateToProps, {
+  userNameChanged,
+  passwordChanged,
+  loginUser
+})(LoginForm);

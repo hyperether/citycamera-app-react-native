@@ -39,27 +39,21 @@ export const passwordChanged = text => {
 };
 
 export const loginUser = ({ userName, password }) => {
-  console.log({ userName, password });
-
-  return dispatch => {
-    // disptach({type: LOGIN_USER});cs
-
+  return (dispatch) => {
     API.login(userName, password)
       .then(response => {
-        dispatch({ type: "LOGIN_USER_SUCCESS", payload: response });
-
+        console.log('dispatch je', dispatch)
+        dispatch({ type: LOGIN_USER })
         try {
           AsyncStorage.setItem("user", JSON.stringify(response.data.user))
-
             .then(() => {
-              AsyncStorage.setItem(
-                "token",
-                JSON.stringify(response.data.token)
-              ).then(() => {
-                console.log('User login data saved in storage');
-                Session.save(response.data.user, response.data.token);
-                console.log('User session',Session.getUser());
-                Actions.postCreator();            
+              AsyncStorage.setItem("token", JSON.stringify(response.data.token))
+              .then(() => {
+                  Session.save(response.data.user, response.data.token)
+                  .then(user => {
+                    loginUserSuccess(dispatch, user);
+                    Actions.postCreator();            
+                })
               });
             })
             .catch(() => {
@@ -71,8 +65,21 @@ export const loginUser = ({ userName, password }) => {
       })
       .catch(error => {
         console.log("Logovanje nije uspelo: " + error);
+        loginUserFail(dispatch);
       });
   };
+};
+
+const loginUserSuccess = (dispatch, user) => {
+  dispatch({
+      type: LOGIN_USER_SUCCESS,
+      payload: user
+  });
+}
+const loginUserFail = (dispatch) => {
+  dispatch({
+      type: LOGIN_USER_FAIL
+  });
 };
 
 export const registerUser = ({ userName, email, password }) => {
