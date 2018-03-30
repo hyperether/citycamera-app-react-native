@@ -38,33 +38,70 @@ export const passwordChanged = text => {
   };
 };
 
+
+
+// export const loginUser = ({ userName, password }) => {
+  //   console.log({ userName, password });
+  
+  //   return dispatch => {
+  //     // disptach({type: LOGIN_USER});cs
+  
+  //     API.login(userName, password)
+  //       .then(response => {
+  //         dispatch({ type: "LOGIN_USER_SUCCESS", payload: response });
+  
+  //         try {
+  //           AsyncStorage.setItem("user", JSON.stringify(response.data.user))
+  
+  //             .then(() => {
+  //               AsyncStorage.setItem(
+  //                 "token",
+  //                 JSON.stringify(response.data.token)
+  //               ).then(() => {
+  //                 console.log('User login data saved in storage');
+  //                 Session.save(response.data.user, response.data.token);
+  //                 console.log('User session',Session.getUser());
+  //                 Actions.postCreator();            
+  //               });
+  //             })
+  //             .catch(() => {
+  //               console.log("Greska prilikom snimanja korisnika.");
+  //             });
+  //         } catch (error) {
+  //           console.log(error);
+  //         }
+  //       })
+  //       .catch(error => {
+  //         console.log("Logovanje nije uspelo: " + error);
+  //       });
+  //   };
+  // };
+  
+
 export const loginUser = ({ userName, password }) => {
   return (dispatch) => {
     API.login(userName, password)
       .then(response => {
-        console.log('dispatch je', dispatch)
         dispatch({ type: LOGIN_USER })
         try {
           AsyncStorage.setItem("user", JSON.stringify(response.data.user))
             .then(() => {
               AsyncStorage.setItem("token", JSON.stringify(response.data.token))
-              .then(() => {
-                  Session.save(response.data.user, response.data.token)
-                  .then(user => {
-                    loginUserSuccess(dispatch, user);
-                    Actions.postCreator();            
-                })
+              .then((data) => {
+                  Session.save(response.data.user, response.data.token);
+  
+                  loginUserSuccess(dispatch, response.data.user);
+                  Actions.postCreator(); 
               });
-            })
-            .catch(() => {
-              console.log("Greska prilikom snimanja korisnika.");
-            });
+            }).catch(() => {  
+                console.log("Error saving credentials.");
+              });
         } catch (error) {
-          console.log(error);
+          console.log("Error is: ", error);
         }
       })
       .catch(error => {
-        console.log("Logovanje nije uspelo: " + error);
+        console.log("Login failed: " + error);
         loginUserFail(dispatch);
       });
   };

@@ -8,7 +8,9 @@ import {
 
 const INITIAL_STATE = { //<---default podesavanja. Prazni stringovi.
     email: '',
-    password: ''
+    password: '',
+    error:'',
+    loading: false
 };
 
 export default (state = INITIAL_STATE, action) => {
