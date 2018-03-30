@@ -1,73 +1,106 @@
-import React from "react";
+import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
 import { Actions, Scene, Router, NavBar } from "react-native-router-flux";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
-import a from "./components/a";
 import AddPhoto from "./components/AddPhoto";
 import AddDescription from "./components/AddDescription";
 import AddLocation from "./components/AddLocation";
 import PostCreator from "./components/PostCreator";
+import { imageAdded, descriptionAdded, addLocation, loginUser, postSent } from "./actions"
 
-const RouterComponent = () => {
+class RouterComponent extends Component  {
 
-// za menjanje back dugmeta
-	// const renderBackButton = () => {
-  //   return (
-  //       <TouchableOpacity
-	// 			//TODO - logOutAlert
-  //           onPress={() => {}}>
-  //           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-  //               <Image
-  //                   source={require('./assets/images/back_chevron.png')}
-  //                   resizeMode={'contain'}/>
-  //               {/* <Text>Back</Text> */}
-  //           </View>
-  //       </TouchableOpacity>
-    // );
-// };
+  constructor (props){
+    super(props)
+  };
 
-  return (
-    <Router>
-      <Scene key="root" >
-        <Scene
-					hideNavBar
-          key="login"
-          title="Welcome to CityCam"
-					component={LoginForm}
-          initial
-        />
-				<Scene 
-					key="signup" 
-					title="Please signup" 
-					component={SignupForm} 
-				/>
+  renderBackButton = () => {
+    return (
+      <TouchableOpacity
+      //TODO - logOutAlert
+        onPress={() => {this.logOutAlert()}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft:18 }}>
+          <Image
+                  source={require('./assets/images/exit.png')}
+                  resizeMode={'contain'}/>
+          {/* <Text>Back</Text> */}
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
+  logOutAlert(){
+    Alert.alert(
+      'Log Out',
+      'Do you want to log out?',
+      [
+        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Yes', onPress: () => this.logOut()},
+      ],
+      { cancelable: false }
+    )
+  }
 
-        {/* <Scene key="main"> */}
-          <Scene						
-            key="postCreator"
-            title="Create a new post"
-						component={PostCreator}
-          />
-					<Scene 
-						key="addPhoto" 
-						title="Add a photo" 
-						component={AddPhoto} />
+  logOut(){
+    this.props.loginUser({});
+    this.props.postSent({});
+    Actions.pop()
+  }
+
+  render(){
+    return (
+      <Router>
+        <Scene key="root" >
           <Scene
-            key="addLocation"
-            title="Select a location"
-            component={AddLocation}
+            hideNavBar
+            key="login"
+            title="Welcome to CityCam"
+            component={LoginForm}
+            initial
           />
-          <Scene
-            key="addDescription"
-            title="Add description"
-            component={AddDescription}
+          <Scene 
+            key="signup" 
+            title="Please signup" 
+            component={SignupForm} 
           />
-        {/* </Scene> */}
-      </Scene>
-    </Router>
-  );
-};
+  
+  
+          {/* <Scene key="main"> */}
+            <Scene						
+              key="postCreator"
+              title="Create a new post"
+              component={PostCreator}
+              renderBackButton={this.renderBackButton}
+            />
+            <Scene 
+              key="addPhoto" 
+              title="Add a photo" 
+              component={AddPhoto} />
+            <Scene
+              key="addLocation"
+              title="Select a location"
+              component={AddLocation}
+            />
+            <Scene
+              key="addDescription"
+              title="Add description"
+              component={AddDescription}
+            />
+          {/* </Scene> */}
+        </Scene>
+      </Router>
+    );
+  };
+}
+  
+const mapDispatchToProps = dispatch => {
+  return{
+    loginUser: bindActionCreators(loginUser, dispatch),
+    postSent: bindActionCreators(postSent, dispatch),
+  }
+}
 
-export default RouterComponent;
+export default connect (null, mapDispatchToProps)(RouterComponent);

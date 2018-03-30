@@ -19,26 +19,10 @@ class PostCreator extends Component {
     console.log('login user', this.props.loginUser)
   }
 
-  // logOutAlert(){
-  //   Alert.alert(
-  //     'Log Out',
-  //     'Do you want to log out?',
-  //     [
-  //       {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-  //       {text: 'Yes', onPress: () => console.log('OK Pressed')},
-  //     ],
-  //     { cancelable: false }
-  //   )
-  // }
-
-  // logOut(){
-  //   this.props.loginUser({})
-  // }
-
   resetAllStates(){
-    // console.log("reset all states, this props ", this.pros)
-    // saljemo nove podatke u actions a posle u reducer i na kraju u state.
-    this.props.imageAdded({}); 
+    this.props.imageAdded({});
+    this.props.descriptionAdded({});
+    this.props.addLocation({}); 
 
     console.log("Image name:", this.props.imageName);    
     console.log("Image path:", this.props.imagePath);
@@ -215,14 +199,17 @@ class PostCreator extends Component {
   }
   };
 
-  //<-- da bi prisli nekom od ovih propseva kucamo this.props.imagePath, npr
+  // za slanje state-ova ka reduxu i dalje
   const mapDispatchToProps = dispatch => {
     return{
       imageAdded: bindActionCreators(imageAdded, dispatch),
+      addLocation:bindActionCreators(addLocation, dispatch),
       descriptionAdded: bindActionCreators(descriptionAdded, dispatch)
     }
   }
 
+  //za primanje stateova u props-e
+  //<-- da bi prisli nekom od ovih propseva kucamo this.props.imagePath, npr  
   const mapStateToProps = state => { 
     return {
       imagePath: state.post.imagePath,
