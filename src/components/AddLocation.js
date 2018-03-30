@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { addLocation } from '../actions';
+import {
+  LOCATION_DISABLED_ALERT_TITLE,
+  LOCATION_DISABLED_MSG
+} from './StringConstants';
 
-const INITIAL_LONGITUDE_DELTA = 0.0421;
-const INITIAL_LATITUDE_DELTA = 0.0922;
+const INITIAL_LONGITUDE_DELTA = 80;
+const INITIAL_LATITUDE_DELTA = 80;
 const LATITUDE_DELTA = 0.01;
 const LONGITUDE_DELTA = 0.01;
 
@@ -16,43 +20,64 @@ class AddLocation extends Component {
       super();
       this.state = {
         isMounted: false,
+        markers: [],
+        isDeviceLocationOn: false,
+        askedForLocation: false,
         region: {
-          latitude: 45.2640,
-          longitude: 19.8309,
+          latitude: 34.553127,
+          longitude: 18.048012,
           latitudeDelta: INITIAL_LATITUDE_DELTA,
           longitudeDelta: INITIAL_LONGITUDE_DELTA,
         }
       };
     }
 
+    onLocationOff = (error) => {
+      console.log(error);
+      if (!this.state.askedForLocation && error.code === 2) {
+        this.state.askedForLocation = true;
+        Alert.alert(
+          LOCATION_DISABLED_ALERT_TITLE,
+          LOCATION_DISABLED_MSG
+        )};
+      setTimeout( () => this.checkCurrentPosition(), 1000);
+    }
+
+    checkCurrentPosition() {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          console.log(position);
+          isDeviceLocationOn = true;
+          this.setState({
+            region: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+            }
+          });
+        },
+        (error) => {this.onLocationOff(error)},
+      { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 },
+      );
+    }
+
     componentDidMount() {
       this.setState({ isMounted: true });
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        this.setState({
-          region: {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          }
-        });
-      },
-    (error) => console.log(error.message),
-    { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
-    this.watchID = navigator.geolocation.watchPosition(
-      position => {
-        this.setState({
-          region: {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          }
-        });
-      }
-    );
+      this.checkCurrentPosition();
+      this.watchID = navigator.geolocation.watchPosition(
+        position => {
+          console.log(position);
+          this.setState({
+            region: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+            }
+          });
+        }
+      );
   }
 
   componentWillUnmount() {
@@ -67,16 +92,27 @@ class AddLocation extends Component {
     Actions.pop();
   }
 
-  onLongPress(newPosition) {
+  onLongPress(e) {
+    const latlng = {
+      latitude: e.nativeEvent.coordinate.latitude,
+      longitude: e.nativeEvent.coordinate.longitude
+    };
     if(this.state.isMounted) {
-      this.setState({ region: {
-        latitude: newPosition.nativeEvent.coordinate.latitude,
-        longitude: newPosition.nativeEvent.coordinate.longitude,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
-      }});
+      this.setState({
+        region: {
+          latitude: latlng.latitude,
+          longitude: latlng.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA
+        },
+        markers: [{coordinates: {
+          longitude: latlng.longitude,
+          latitude: latlng.latitude
+          }
+        }]
+      });
     }
-  }
+}
 
 render() {
   const {
@@ -97,15 +133,24 @@ render() {
       <MapView
         provider={ PROVIDER_GOOGLE }
         style={mapStyle}
-        showsUserLocation
+        showsUserLocation={true}
+        showsMyLocationButton
         onLongPress={(newPosition) => this.onLongPress(newPosition)}
         region={ this.state.region }
         onRegionChangeComplete={ region => this.setState({region}) }
       >
-        <MapView.Marker
-          coordinate={ this.state.region }
-          pinColor='#e23d14'
-        />
+      {this.state.markers.map((mark, i) =>
+      (
+              <MapView.Marker
+                key={i}
+                ref={this.setMarkerRef}
+                draggable
+                coordinate={mark.coordinates}
+
+              >
+
+            </MapView.Marker>
+            ))}
       </MapView>
       </View>
       <View
