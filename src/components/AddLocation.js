@@ -6,7 +6,9 @@ import { connect } from 'react-redux';
 import { addLocation } from '../actions';
 import {
   LOCATION_DISABLED_ALERT_TITLE,
-  LOCATION_DISABLED_MSG
+  LOCATION_DISABLED_MSG,
+  NO_LOCATION_SELECTED_ALERT_TITLE,
+  NO_LOCATION_SELECTED_MSG
 } from './StringConstants';
 
 const INITIAL_LONGITUDE_DELTA = 80;
@@ -86,10 +88,18 @@ class AddLocation extends Component {
   }
 
   saveLocation() {
-    const { latitude, longitude } = this.state.region;
-    const position = { latitude, longitude };
-    this.props.addLocation(position);
-    Actions.pop();
+    if (this.state.markers.length < 1) {
+      Alert.alert(
+        NO_LOCATION_SELECTED_ALERT_TITLE,
+        NO_LOCATION_SELECTED_MSG
+      )
+    } else {
+      const { latitude, longitude } = this.state.region;
+      const position = { latitude, longitude };
+      this.props.addLocation(position);
+      Actions.pop();
+    }
+
   }
 
   onLongPress(e) {
@@ -146,7 +156,7 @@ render() {
                 ref={this.setMarkerRef}
                 draggable
                 coordinate={mark.coordinates}
-
+                pinColor='#e23d14'
               >
 
             </MapView.Marker>
