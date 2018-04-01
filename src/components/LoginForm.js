@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { userNameChanged, passwordChanged, loginUser } from '../actions';
 import { Actions } from 'react-native-router-flux';
@@ -9,6 +9,7 @@ class LoginForm extends Component {
 
     //odlučuje da li će spiner ili dugme biti u card section-u
     onButtonPress(){
+        Keyboard.dismiss();
         const {userName, password} = this.props;
         this.props.loginUser({userName, password});
     }
@@ -25,23 +26,23 @@ class LoginForm extends Component {
         return (
             <Card>
                 <CardSection>
-                    <Input 
+                    <Input
                         placeholder="Username"
                         label="Username:"
-                        style={{height: 40, width: 100}} 
-                        onChangeText={this.onUserNameChange.bind(this)}  
-                        value={this.props.userName} //<-- iz mapStateToPropsa(iz reducera)                      
+                        style={{height: 40, width: 100}}
+                        onChangeText={this.onUserNameChange.bind(this)}
+                        value={this.props.userName} //<-- iz mapStateToPropsa(iz reducera)
                     />
                 </CardSection>
-                
-                <CardSection>                
-                    <Input 
-                        secureTextEntry                                    
+
+                <CardSection>
+                    <Input
+                        secureTextEntry
                         placeholder="Password"
                         label="Password:"
-                        style={{height: 40, width: 100}}     
-                        onChangeText={this.onPasswordChange.bind(this)} 
-                        value={this.props.password}  //<-- iz mapStateToPropsa                  
+                        style={{height: 40, width: 100}}
+                        onChangeText={this.onPasswordChange.bind(this)}
+                        value={this.props.password}  //<-- iz mapStateToPropsa
                     />
 
                 </CardSection>
@@ -57,7 +58,7 @@ class LoginForm extends Component {
                 </CardSection>
 
                 <CardSection >
-                    <Text 
+                    <Text
                         style={styles.signUpTextStyle}
                         onPress={Actions.signup}
                     >
