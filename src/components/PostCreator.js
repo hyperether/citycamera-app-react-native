@@ -9,7 +9,7 @@ import TouchableMenuItem from "./TouchableMenuItem";
 import OverlayChooserItem from "./OverlayChooserItem";
 import API from "../services/API";
 import Session from "../services/Session";
-import {loginUser, imageAdded, descriptionAdded, addLocation, postSent} from "../actions";
+import {loginUser, imageAdded, descriptionAdded, addLocation, postSent, logOut} from "../actions";
 
 
 class PostCreator extends Component {
@@ -17,6 +17,25 @@ class PostCreator extends Component {
     super(props);
     console.log("props je", props)
     console.log('login user', this.props.loginUser)
+  }
+
+  logOutAlert(){
+    Alert.alert(
+      'Log Out',
+      'Do you want to log out?',
+      [
+        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Yes', onPress: () => this.logOut()},
+      ],
+      { cancelable: false }
+    )
+  }
+
+  logOut(){
+    console.log('loout radi')
+      // this.props.logOut();
+    //   this.props.postSent({});
+    // Actions.pop()
   }
 
   resetAllStates(){
@@ -196,7 +215,8 @@ class PostCreator extends Component {
     return{
       imageAdded: bindActionCreators(imageAdded, dispatch),
       addLocation:bindActionCreators(addLocation, dispatch),
-      descriptionAdded: bindActionCreators(descriptionAdded, dispatch)
+      descriptionAdded: bindActionCreators(descriptionAdded, dispatch),
+      logOut: bindActionCreators(logOut, dispatch)
     }
   }
 
@@ -209,7 +229,8 @@ class PostCreator extends Component {
       imageExtension: state.post.imageExtension,
       description: state.post.description,
       longitude: state.post.longitude,
-      latitude: state.post.latitude
+      latitude: state.post.latitude,
+      logOut: state.auth.logOut
     };
   };
 

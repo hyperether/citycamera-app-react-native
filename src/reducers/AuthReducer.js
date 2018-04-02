@@ -3,7 +3,8 @@ import {
      EMAIL_CHANGED,
      PASSWORD_CHANGED, 
      LOGIN_USER_FAIL,
-     LOGIN_USER
+     LOGIN_USER,
+     LOGOUT
     } from '../actions/types'
 
 const INITIAL_STATE = { //<---default podesavanja. Prazni stringovi.
@@ -30,7 +31,10 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, loading: true, error:''};
 
         case LOGIN_USER_FAIL:
-            return {...state, error: 'Authentication failed.', loading:false}
+            return {...state, error: 'Authentication failed.', loading:false};
+        
+        case LOGOUT:
+            return {...state, loading: false, error:''}
     
         default:
             return state;

@@ -9,6 +9,7 @@ import {
   LOGIN_USER,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
+  LOGOUT,
   POST_IMAGE_ADDED,
   POST_DESCRIPTION_ADDED,
   POST_LOCATION_ADDED,
@@ -118,6 +119,14 @@ const loginUserFail = (dispatch) => {
       type: LOGIN_USER_FAIL
   });
 };
+
+export const logOut = (logOut) => {
+  return (dispatch) => {
+    Actions.pop();
+    dispatch({type: LOGOUT});
+    Session.delete(); 
+  }
+ }
 
 export const registerUser = ({ userName, email, password }) => {
   console.log({ userName, email, password });

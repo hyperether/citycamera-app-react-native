@@ -9,19 +9,21 @@ import AddPhoto from "./components/AddPhoto";
 import AddDescription from "./components/AddDescription";
 import AddLocation from "./components/AddLocation";
 import PostCreator from "./components/PostCreator";
-import { imageAdded, descriptionAdded, addLocation, loginUser, postSent } from "./actions"
+import { imageAdded, descriptionAdded, addLocation, loginUser, postSent, logOut } from "./actions"
+import { Session } from "./services/Session"
 
 class RouterComponent extends Component  {
 
   constructor (props){
     super(props)
+    console.log('Props ', this.props)
   };
 
   renderBackButton = () => {
     return (
       <TouchableOpacity
       //TODO - logOutAlert
-        onPress={() => {this.logOutAlert()}}>
+        onPress={() => {this.props.logOut()}}>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft:18 }}>
           <Image
                   source={require('./assets/images/exit.png')}
@@ -32,23 +34,26 @@ class RouterComponent extends Component  {
     );
   };
 
-  logOutAlert(){
-    Alert.alert(
-      'Log Out',
-      'Do you want to log out?',
-      [
-        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Yes', onPress: () => this.logOut()},
-      ],
-      { cancelable: false }
-    )
-  }
+  // logOutAlert(){
+  //   Alert.alert(
+  //     'Log Out',
+  //     'Do you want to log out?',
+  //     [
+  //       {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+  //       {text: 'Yes', onPress: () => this.logOut()},
+  //     ],
+  //     { cancelable: false }
+  //   )
+  // }
 
-  logOut(){
-    this.props.loginUser({});
-    this.props.postSent({});
-    Actions.pop()
-  }
+  // logOut(){
+  //   if(Session){
+  //     this.Session.delete();
+  //     this.props.postSent({});
+  //   };
+  //   Actions.pop()
+    
+  // }
 
   render(){
     return (
@@ -100,7 +105,9 @@ const mapDispatchToProps = dispatch => {
   return{
     loginUser: bindActionCreators(loginUser, dispatch),
     postSent: bindActionCreators(postSent, dispatch),
+    logOut: bindActionCreators(logOut,dispatch)
   }
 }
+
 
 export default connect (null, mapDispatchToProps)(RouterComponent);
