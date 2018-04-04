@@ -19,26 +19,7 @@ class PostCreator extends Component {
     console.log('login user', this.props.loginUser)
   }
 
-  logOutAlert(){
-    Alert.alert(
-      'Log Out',
-      'Do you want to log out?',
-      [
-        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Yes', onPress: () => this.logOut()},
-      ],
-      { cancelable: false }
-    )
-  }
-
-  logOut(){
-    console.log('loout radi')
-      // this.props.logOut();
-    //   this.props.postSent({});
-    // Actions.pop()
-  }
-
-  resetAllStates(){
+    resetAllStates(){
     this.props.imageAdded({});
     this.props.descriptionAdded({});
     this.props.addLocation({}); 
@@ -216,7 +197,6 @@ class PostCreator extends Component {
       imageAdded: bindActionCreators(imageAdded, dispatch),
       addLocation:bindActionCreators(addLocation, dispatch),
       descriptionAdded: bindActionCreators(descriptionAdded, dispatch),
-      logOut: bindActionCreators(logOut, dispatch)
     }
   }
 
@@ -230,7 +210,6 @@ class PostCreator extends Component {
       description: state.post.description,
       longitude: state.post.longitude,
       latitude: state.post.latitude,
-      logOut: state.auth.logOut
     };
   };
 

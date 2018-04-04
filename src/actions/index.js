@@ -1,7 +1,7 @@
 import API from "../services/API";
 import Session from "../services/Session";
 import { Actions } from "react-native-router-flux";
-import { AsyncStorage, ToastAndroid } from "react-native";
+import { AsyncStorage, ToastAndroid, Alert } from "react-native";
 import {
   USERNAME_CHANGED,
   EMAIL_CHANGED,
@@ -120,13 +120,29 @@ const loginUserFail = (dispatch) => {
   });
 };
 
+const logOutJump = (dispatch) => {
+  console.log('dispatch je '. dispatch)
+  dispatch({type: LOGOUT});  
+  Actions.pop();
+  Session.delete(); 
+ };
+
 export const logOut = (logOut) => {
-  return (dispatch) => {
-    Actions.pop();
-    dispatch({type: LOGOUT});
-    Session.delete(); 
+  return (dispatch)=> {
+    Alert.alert(
+      'Log Out',
+      'Do you want to log out?',
+      [
+        {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Yes', onPress: () => logOutJump(dispatch)},
+      ],
+      { cancelable: false }
+    )
   }
- }
+  
+}
+
+ 
 
 export const registerUser = ({ userName, email, password }) => {
   console.log({ userName, email, password });

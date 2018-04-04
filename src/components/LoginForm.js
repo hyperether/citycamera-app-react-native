@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TextInput, Button, StyleSheet, ImageBackground } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet, ImageBackground, Keyboard } from "react-native";
 import { connect } from "react-redux";
 import { userNameChanged, passwordChanged, loginUser } from "../actions";
 import { Actions } from "react-native-router-flux";
@@ -7,10 +7,17 @@ import { Card, CardSection, Input, Spinner } from "./common";
 import backgroundImage from "../assets/images/bg.jpg"
 
 class LoginForm extends Component {
-  //odlučuje da li će spiner ili dugme biti u card section-u
+
+  constructor(props){
+    super(props);
+  }
+
   onButtonPress() {
     const { userName, password } = this.props;
     this.props.loginUser({ userName, password });
+    Keyboard.dismiss();
+    // this.onUserNameChange('');
+    // this.onPasswordChange('')
   }
 
   onUserNameChange(text) {
@@ -42,11 +49,10 @@ class LoginForm extends Component {
 
   render() {
     return (
-        <ImageBackground 
-          source={backgroundImage}          
-          style={styles.backgroundImage}
-          resizeMode='cover'
-        >
+      <ImageBackground 
+        source={backgroundImage}          
+        style={styles.backgroundImage}
+      >
         
           <View style={styles.container}>
               <View style={styles.inputContainer}>
@@ -75,7 +81,7 @@ class LoginForm extends Component {
             </Text>
         </View>
         
-        </ImageBackground>
+      </ImageBackground>
 
 
 
@@ -164,6 +170,7 @@ const styles = StyleSheet.create ({
   input: {
     color: "white",
     width: "100%",
+    height: 40,    
     backgroundColor:"rgba(0,0,0,0.5)",
     padding: 5,
     paddingLeft: 15,

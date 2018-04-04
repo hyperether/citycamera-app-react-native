@@ -8,8 +8,9 @@ import {
     } from '../actions/types'
 
 const INITIAL_STATE = { //<---default podesavanja. Prazni stringovi.
-    email: '',
+    userName: '',
     password: '',
+    email: '',
     error:'',
     loading: false
 };
@@ -34,7 +35,7 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, error: 'Authentication failed.', loading:false};
         
         case LOGOUT:
-            return {...state, loading: false, error:''}
+            return {...state, loading: false, error:'', password: '', userName: ''}
     
         default:
             return state;

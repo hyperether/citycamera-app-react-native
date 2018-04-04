@@ -16,13 +16,11 @@ class RouterComponent extends Component  {
 
   constructor (props){
     super(props)
-    console.log('Props ', this.props)
   };
 
   renderBackButton = () => {
     return (
       <TouchableOpacity
-      //TODO - logOutAlert
         onPress={() => {this.props.logOut()}}>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft:18 }}>
           <Image
@@ -33,27 +31,6 @@ class RouterComponent extends Component  {
       </TouchableOpacity>
     );
   };
-
-  // logOutAlert(){
-  //   Alert.alert(
-  //     'Log Out',
-  //     'Do you want to log out?',
-  //     [
-  //       {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-  //       {text: 'Yes', onPress: () => this.logOut()},
-  //     ],
-  //     { cancelable: false }
-  //   )
-  // }
-
-  // logOut(){
-  //   if(Session){
-  //     this.Session.delete();
-  //     this.props.postSent({});
-  //   };
-  //   Actions.pop()
-    
-  // }
 
   render(){
     return (
