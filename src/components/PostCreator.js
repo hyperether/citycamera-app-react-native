@@ -15,8 +15,6 @@ import {loginUser, imageAdded, descriptionAdded, addLocation, postSent, logOut} 
 class PostCreator extends Component {
   constructor(props) {
     super(props);
-    console.log("props je", props)
-    console.log('login user', this.props.loginUser)
   }
 
     resetAllStates(){
@@ -26,15 +24,7 @@ class PostCreator extends Component {
   }
 
   onSendPress(){
-    //Podaci prosledjeni iz redux-a
-    console.log("Image name:", this.props.imageName);    
-    console.log("Image path:", this.props.imagePath);
-    console.log("Image extension:", this.props.imageExtension);
-    console.log("Description:", this.props.description);
-    console.log("Longitude: ", this.props.longitude);
-    console.log("Latitude: ", this.props.latitude); 
-    console.log("User je:", Session.getUser());
-  
+     
     var uploadURL, fileId;
   
     API.getUploadURL(

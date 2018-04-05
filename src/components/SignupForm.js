@@ -1,99 +1,158 @@
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
-import { userNameChanged, emailChanged, passwordChanged, registerUser} from '../actions'
-import { Button, Card, CardSection, Input, Spinner } from './common';
+import React, { Component } from "react";
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  ImageBackground, 
+  Image, 
+  TextInput 
+} from "react-native";
+import { connect } from "react-redux";
+import { Actions } from "react-native-router-flux";
+import {
+  userNameChanged,
+  emailChanged,
+  passwordChanged,
+  registerUser
+} from "../actions";
+import { Button, Card, CardSection, Input, Spinner } from "./common";
+import backgroundImage from "../assets/images/bg.jpg";
 
 class SignupForm extends Component {
+  onButtonPress() {
+    const { userName, email, password } = this.props;
+    this.props.registerUser({ userName, email, password });
+  }
 
-    onButtonPress() {
-       const {userName, email, password} = this.props;
-       this.props.registerUser({userName, email, password});
+  onUserNameChange(text) {
+    this.props.userNameChanged(text);
+  }
+
+  onEmailChange(text) {
+    this.props.emailChanged(text);
+  }
+
+  onPasswordChange(text) {
+    this.props.passwordChanged(text);
+  }
+
+  renderError(){
+    if (this.props.error){
+      return (
+        <View>
+          <Text style={styles.errorTextStyle}>
+              {this.props.error}
+          </Text>
+        </View>
+      )
     }
+  }
 
-    onUserNameChange(text) {
-        this.props.userNameChanged(text);
-    };
-
-    onEmailChange(text) {
-        this.props.emailChanged(text);
-    };
-
-    onPasswordChange(text) {
-        this.props.passwordChanged(text);
-    };
-
-    render (){
-        return (
-            <Card>
-                <CardSection>
-                    <Input 
-                        placeholder="Username"
-                        label="User:"
-                        onChangeText={this.onUserNameChange.bind(this)}
-                        style={{height: 40, width: 100}}    
-                        value={this.props.userName}
-                                             
-                    />
-                </CardSection>
-
-                <CardSection>
-                    <Input 
-                        placeholder="Email"
-                        label="Email:"
-                        onChangeText={this.onEmailChange.bind(this)}
-                        style={{height: 40, width: 100}} 
-                        value={this.props.email}
-                                                
-                    />
-                </CardSection>
-                
-                <CardSection>                
-                    <Input 
-                        secureTextEntry                                    
-                        placeholder="Password"
-                        label="Password:"
-                        onChangeText={this.onPasswordChange.bind(this)}
-                        style={{height: 40, width: 100}}   
-                        value={this.props.password}
-                                                
-                    />
-                </CardSection>
-
-                <Text style={styles.errorTextStyle}>
-                 {/* {this.state.error} */}
-                </Text>
-
-                <CardSection>
-                    <Button whenPressed={this.onButtonPress.bind(this)}>
-                        Register
-                    </Button>
-                </CardSection>
-            </Card>
-        );
+  renderRegisterButton() {
+    if (this.props.loading) {
+      return <Spinner size="large" />;
     }
-};
+    return <Button onPress={this.onButtonPress.bind(this)}> Register </Button>;
+  }
 
-const styles = {
-    errorTextStyle: {
-        fontSize: 20,
-        alignSelf: 'center',
-        color: 'red'
-    },
+  render() {
+    return (
+      <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
 
-    buttonViewStyle: {
-        flex: 1,
-        height:100
-    }
+        <View style={styles.container}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="username"
+              placeholderTextColor="white"
+              underlineColorAndroid="transparent"
+              onChangeText={this.onUserNameChange.bind(this)}
+              value={this.props.userName} //<-- iz mapStateToPropsa(iz reducera)
+            />
+
+            <TextInput
+              style={styles.input}
+              placeholder="email"
+              placeholderTextColor="white"
+              underlineColorAndroid="transparent"
+              onChangeText={this.onEmailChange.bind(this)}
+              value={this.props.email} //<-- iz mapStateToPropsa(iz reducera)
+            />
+
+            <TextInput
+              style={styles.input}
+              secureTextEntry
+              placeholder="password"
+              placeholderTextColor="white"
+              underlineColorAndroid="transparent"
+              onChangeText={this.onPasswordChange.bind(this)}
+              value={this.props.password} //<-- iz mapStateToPropsa
+            />
+          </View>
+          {this.renderError()}
+          {this.renderRegisterButton()}
+          
+        </View>
+      </ImageBackground>
+    );
+  }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+
+  backgroundImage: {
+    width: "100%",
+    flex: 1
+  },
+
+  backgroundOverlay: {
+    backgroundColor: "rgba(0,0,0,0.5)"
+  },
+
+  inputContainer: {
+    width: "70%",
+    marginBottom: 15
+  },
+
+  input: {
+    color: "white",
+    width: "100%",
+    height: 40,
+    fontSize: 20,    
+    backgroundColor: "rgba(0,0,0,0.5)",
+    padding: 5,
+    paddingLeft: 15,
+    margin: 8,
+    borderRadius: 5
+  },
+
+  errorTextStyle: {
+    fontSize: 20,
+    alignSelf: "center",
+    color: "white",
+    backgroundColor: "transparent",
+    fontWeight: "bold",
+    textShadowColor: "red",
+    textShadowOffset: { width: -1, height: 1 }
+  }
+});
 
 const mapStateToProps = state => {
-    return {
-        userName: state.auth.userName,
-        email: state.auth.email,
-        password: state.auth.password
-    }
-}
+  return {
+    userName: state.auth.userName,
+    email: state.auth.email,
+    password: state.auth.password
+  };
+};
 
-export default connect(mapStateToProps,{userNameChanged, emailChanged, passwordChanged, registerUser}) (SignupForm);
+export default connect(mapStateToProps, {
+  userNameChanged,
+  emailChanged,
+  passwordChanged,
+  registerUser
+})(SignupForm);

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { View, Text, TextInput, Button, StyleSheet, ImageBackground, Keyboard } from "react-native";
+import { View, Text, TextInput, StyleSheet, ImageBackground, Keyboard, Image } from "react-native";
 import { connect } from "react-redux";
 import { userNameChanged, passwordChanged, loginUser } from "../actions";
 import { Actions } from "react-native-router-flux";
-import { Card, CardSection, Input, Spinner } from "./common";
+import { Card, CardSection, Input, Spinner, Button } from "./common";
 import backgroundImage from "../assets/images/bg.jpg"
 
 class LoginForm extends Component {
@@ -44,7 +44,7 @@ class LoginForm extends Component {
     if (this.props.loading) {
       return <Spinner size="large" />;
     }
-    return <Button title="Login" onPress={this.onButtonPress.bind(this)}/>;
+    return <Button onPress={this.onButtonPress.bind(this)}> Login </Button>;
   }
 
   render() {
@@ -53,35 +53,39 @@ class LoginForm extends Component {
         source={backgroundImage}          
         style={styles.backgroundImage}
       >
-        
-          <View style={styles.container}>
-              <View style={styles.inputContainer}>
-                <TextInput 
-                  style={styles.input} 
-                  placeholder="username" 
-                  placeholderTextColor= "white"                
-                  underlineColorAndroid="transparent"
-                  onChangeText={this.onUserNameChange.bind(this)}
-                  value={this.props.userName} //<-- iz mapStateToPropsa(iz reducera)
-                />
-                <TextInput 
-                  style={styles.input} 
-                  secureTextEntry
-                  placeholder="password" 
-                  placeholderTextColor= "white"
-                  underlineColorAndroid="transparent"
-                  onChangeText={this.onPasswordChange.bind(this)}
-                  value={this.props.password} //<-- iz mapStateToPropsa
-                />
-            </View>
-              {this.renderError()}
-              {this.renderLogInButton()}
-            <View>
-              <Text style={styles.signUpTextStyle} onPress={Actions.signup}>
-                Register
-              </Text>
-            </View>
+        <View style={styles.header}>
+          <Image source={require('../assets/images/whiteCamera.png')} style={{width: 25, height:25, marginLeft:10, marginRight:10}} />
+          <Text style={styles.headerText}>CityCam</Text>
         </View>
+
+        <View style={styles.container}>
+            <View style={styles.inputContainer}>
+              <TextInput 
+                style={styles.input} 
+                placeholder="username" 
+                placeholderTextColor= "white"                
+                underlineColorAndroid="transparent"
+                onChangeText={this.onUserNameChange.bind(this)}
+                value={this.props.userName} //<-- iz mapStateToPropsa(iz reducera)
+              />
+              <TextInput 
+                style={styles.input} 
+                secureTextEntry
+                placeholder="password" 
+                placeholderTextColor= "white"
+                underlineColorAndroid="transparent"
+                onChangeText={this.onPasswordChange.bind(this)}
+                value={this.props.password} //<-- iz mapStateToPropsa
+              />
+          </View>
+            {this.renderError()}
+            {this.renderLogInButton()}
+          <View>
+            <Text style={styles.signUpTextStyle} onPress={Actions.signup}>
+              Register
+            </Text>
+          </View>
+       </View>
         
       </ImageBackground>
 
@@ -91,12 +95,25 @@ class LoginForm extends Component {
 
 
 const styles = StyleSheet.create ({
+
   container: {
-    flex: 1,
+    flex: 10,
     justifyContent: "center",
     alignItems: "center"
   },
 
+  header:{
+    flex:1,
+    flexDirection: "row",
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+
+  headerText: {
+    color: "white",
+    fontSize: 22,
+    fontWeight: "bold",
+  },
   backgroundImage: {
     width: "100%",
     flex: 1,
@@ -114,11 +131,13 @@ const styles = StyleSheet.create ({
   input: {
     color: "white",
     width: "100%",
-    height: 40,    
+    height: 40,  
+    fontSize: 20,      
     backgroundColor:"rgba(0,0,0,0.5)",
     padding: 5,
     paddingLeft: 15,
     margin: 8,
+    borderRadius: 5,    
   },
 
   signUpTextStyle: {
