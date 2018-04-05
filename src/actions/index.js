@@ -81,9 +81,9 @@ export const passwordChanged = text => {
 
 export const loginUser = ({ userName, password }) => {
   return (dispatch) => {
+    dispatch({ type: LOGIN_USER })    
     API.login(userName, password)
       .then(response => {
-        dispatch({ type: LOGIN_USER })
         try {
           AsyncStorage.setItem("user", JSON.stringify(response.data.user))
             .then(() => {

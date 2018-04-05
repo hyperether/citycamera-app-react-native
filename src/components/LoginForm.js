@@ -74,77 +74,21 @@ class LoginForm extends Component {
                   value={this.props.password} //<-- iz mapStateToPropsa
                 />
             </View>
-            {this.renderError()}
-            {this.renderLogInButton()}
-            <Text style={styles.signUpTextStyle} onPress={Actions.signup}>
-              Register
-            </Text>
+              {this.renderError()}
+              {this.renderLogInButton()}
+            <View>
+              <Text style={styles.signUpTextStyle} onPress={Actions.signup}>
+                Register
+              </Text>
+            </View>
         </View>
         
       </ImageBackground>
 
-
-
-
-
-
-
-      // <Card>
-      //   <CardSection>
-      //     <Input
-      //       placeholder="Username"
-      //       label="Username:"
-      //       style={{ height: 40, width: 100 }}
-      //       onChangeText={this.onUserNameChange.bind(this)}
-      //       value={this.props.userName} //<-- iz mapStateToPropsa(iz reducera)
-      //     />
-      //   </CardSection>
-
-      //   <CardSection>
-      //     <Input
-      //       secureTextEntry
-      //       placeholder="Password"
-      //       label="Password:"
-      //       style={{ height: 40, width: 100 }}
-      //       onChangeText={this.onPasswordChange.bind(this)}
-      //       value={this.props.password} //<-- iz mapStateToPropsa
-      //     />
-      //   </CardSection>
-
-      //   
-
-      //   <CardSection>
-      //     {this.renderLogInButton()}
-      //   </CardSection>
-
-      //   <CardSection>
-      //     <Text style={styles.signUpTextStyle} onPress={Actions.signup}>
-      //       Register
-      //     </Text>
-      //   </CardSection>
-      // </Card>
     );
   }
 }
 
-// const styles = {
-//   errorTextStyle: {
-//     fontSize: 20,
-//     alignSelf: "center",
-//     color: "red"
-//   },
-
-//   buttonViewStyle: {
-//     flex: 1,
-//     height: 60
-//   },
-
-//   signUpTextStyle: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     color: "blue"
-//   }
-// };
 
 const styles = StyleSheet.create ({
   container: {
