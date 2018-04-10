@@ -110,10 +110,6 @@ const styles = StyleSheet.create({
     flex: 1
   },
 
-  backgroundOverlay: {
-    backgroundColor: "rgba(0,0,0,0.5)"
-  },
-
   inputContainer: {
     width: "70%",
     marginBottom: 15
@@ -124,7 +120,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 40,
     fontSize: 20,    
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: "rgba(0,0,0,0.6)",
     padding: 5,
     paddingLeft: 15,
     margin: 8,

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ToastAndroid, Text } from "react-native";
+import { View, ToastAndroid, Text, BackHandler } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { Actions } from "react-native-router-flux";
@@ -16,6 +16,17 @@ class PostCreator extends Component {
   constructor(props) {
     super(props);
   }
+
+  // componentDidMount(){
+  //   BackHandler.addEventListener('hardwareBackPressed', ()=>{
+  //     this.props.logOut();
+  //     return true;
+  //   })
+  // }
+
+  // componentWillUnmount(){
+  //   BackHandler.removeEventListener('hardwareBackPressed')
+  // }
 
     resetAllStates(){
     this.props.imageAdded({});
@@ -187,6 +198,7 @@ class PostCreator extends Component {
       imageAdded: bindActionCreators(imageAdded, dispatch),
       addLocation:bindActionCreators(addLocation, dispatch),
       descriptionAdded: bindActionCreators(descriptionAdded, dispatch),
+      logOut: bindActionCreators(logOut, dispatch)
     }
   }
 
