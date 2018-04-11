@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ToastAndroid, Text } from "react-native";
+import { View, ToastAndroid, Text, BackHandler } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { Actions } from "react-native-router-flux";
@@ -34,20 +34,21 @@ class PostCreator extends Component {
     )
   }
 
-  logOut(){
-    console.log('loout radi')
-      // this.props.logOut();
-    //   this.props.postSent({});
-    // Actions.pop()
   }
 
-  resetAllStates(){
+
+  // componentWillUnmount(){
+  //   BackHandler.removeEventListener('hardwareBackPressed')
+  // }
+
+    resetAllStates(){
     this.props.imageAdded({});
     this.props.descriptionAdded({});
     this.props.addLocation({});
   }
 
   onSendPress(){
+
     //Podaci prosledjeni iz redux-a
     console.log("Image name:", this.props.imageName);
     console.log("Image path:", this.props.imagePath);
@@ -66,6 +67,9 @@ class PostCreator extends Component {
         };
       });
     }, 1000);
+
+     
+
     var uploadURL, fileId;
 
     API.getUploadURL(
@@ -274,7 +278,6 @@ class PostCreator extends Component {
       description: state.post.description,
       longitude: state.post.longitude,
       latitude: state.post.latitude,
-      logOut: state.auth.logOut
     };
   };
 
