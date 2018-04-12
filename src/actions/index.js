@@ -93,6 +93,9 @@ export const loginUser = ({ userName, password }) => {
   
                   loginUserSuccess(dispatch, response.data.user);
                   Actions.postCreator(); 
+                  //for reseting all fields on login
+                  dispatch({type: LOGOUT})
+
               });
             }).catch(() => {  
                 console.log("Error saving credentials.");
@@ -121,7 +124,6 @@ const loginUserFail = (dispatch) => {
 };
 
 const logOutJump = (dispatch) => {
-  console.log('dispatch je '. dispatch)
   dispatch({type: LOGOUT});  
   Actions.pop();
   Session.delete(); 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ToastAndroid, Text, BackHandler } from "react-native";
+import { View, ToastAndroid, Text, BackHandler, AsyncStorage } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { Actions } from "react-native-router-flux";
@@ -17,8 +17,10 @@ class PostCreator extends Component {
   constructor(props) {
     super(props);
     this.state = { sending: false, spinnerOn: false };
-    console.log("props je", props)
-    console.log('login user', this.props.loginUser)
+    // console.log("props je", props)
+    // console.log('login user', this.props.loginUser)
+    AsyncStorage.getItem("isLogedIn").then((response) => {console.log("Da li je logovan: ", response)})
+    
   }
 
 
@@ -33,13 +35,6 @@ class PostCreator extends Component {
       { cancelable: false }
     )
   }
-
-  }
-
-
-  // componentWillUnmount(){
-  //   BackHandler.removeEventListener('hardwareBackPressed')
-  // }
 
     resetAllStates(){
     this.props.imageAdded({});
@@ -57,7 +52,8 @@ class PostCreator extends Component {
     console.log("Longitude: ", this.props.longitude);
     console.log("Latitude: ", this.props.latitude);
     console.log("User je:", Session.getUser());
-
+    
+    ToastAndroid.show("Sending...", ToastAndroid.SHORT);
     this.setState( { sending: true });
     this.disableAllMenutItems();
     setInterval(() => {
@@ -66,7 +62,7 @@ class PostCreator extends Component {
            spinnerOn: !previousState.spinnerOn,
         };
       });
-    }, 1000);
+    }, 200);
 
      
 
@@ -86,12 +82,10 @@ class PostCreator extends Component {
       xhr.onreadystatechange = (err) => {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
-            // console.log("Successfully uploaded the file.");
             this.setState({ sending: false });
             ToastAndroid.show("Successfully uploaded the file.", ToastAndroid.LONG);
             this.resetAllStates();
           } else {
-            // console.log("The file could not be uploaded.");
             this.setState({ sending: false });
             ToastAndroid.show("The file could not be uploaded.", ToastAndroid.LONG);
 
@@ -237,25 +231,25 @@ class PostCreator extends Component {
   }
 
   const styles = {
-  mainContainerStyle: {
-    flex: 1,
-    zIndex: 0
-  },
-  menuItemsContainerStyle: {
-    flex: 1,
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    flexDirection: "column",
-    alignItems: "space-around",
-    zIndex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  menuRowStyle: {
-    flex: 1,
-    flexDirection: "row",
-    zIndex: 2
-  }
+    mainContainerStyle: {
+      flex: 1,
+      zIndex: 0
+    },
+    menuItemsContainerStyle: {
+      flex: 1,
+      paddingVertical: 15,
+      paddingHorizontal: 15,
+      flexDirection: "column",
+      alignItems: "space-around",
+      zIndex: 1,
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    menuRowStyle: {
+      flex: 1,
+      flexDirection: "row",
+      zIndex: 2
+    }
   };
 
   // za slanje state-ova ka reduxu i dalje

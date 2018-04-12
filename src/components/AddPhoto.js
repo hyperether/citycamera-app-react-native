@@ -52,16 +52,11 @@ class AddPhoto extends Component {
               name: response.fileName, 
               extension: this.state.imageExtension
             };
-            // console.log("Android putanja ",response.path);
-            // console.log("IOS putanja ",response.origURL); <-- pogledati dokuementaciju.
-            this.getImageExtension(response.path);
+            // console.log("Android path ",response.path);
+            // console.log("IOS path ",response.origURL); <-- see documentacion.
             this.props.imageAdded(source);
             
             Actions.pop();
-
-            // this.setState({
-            //   avatarSource: source
-            // });
           }
         });
       } catch (error) {
@@ -72,10 +67,6 @@ class AddPhoto extends Component {
 
   launchCamera() {
     var options = {
-      // title: 'Select Avatar',
-      // customButtons: [
-      //   {name: 'fb', title: 'Choose Photo from Facebook'},
-      // ],
       storageOptions: {
         skipBackup: true,
         path: "images"
@@ -83,23 +74,29 @@ class AddPhoto extends Component {
     };
 
     ImagePicker.launchCamera(options, response => {
-      if (response.didCancel) {
-        console.log("User cancelled image picker");
-      } else if (response.error) {
-        console.log("ImagePicker Error: ", response.error);
-      } else if (response.customButton) {
-        console.log("User tapped custom button: ", response.customButton);
-      } else {
-        let source = { path: response.path };
-        this.props.imageAdded(source); //--saljemo image u action imageAdded
-        this.getImageExtension(response.path);
-
-        this.getImageExtension(response.path);
-        this.props.imageAdded(source);
-        
-        Actions.pop();
-        // });
-      }
+      try {
+        AsyncStorage.getItem("user").then((err, user)=>{
+          if (response.didCancel) {
+            console.log("User cancelled image picker");
+          } else if (response.error) {
+            console.log("ImagePicker Error: ", response.error);
+          } else if (response.customButton) {
+            console.log("User tapped custom button: ", response.customButton);
+          } else {
+            this.getImageExtension(response.path);            
+            let source = { 
+              path: response.path,
+              name: response.fileName, 
+              extension: this.state.imageExtension
+            };
+            this.props.imageAdded(source); //-sending image to action imageAdded
+            
+            Actions.pop();
+          }
+        });
+      } catch (error){
+        console.log('Error with uploading image: ', error)
+        }
     });
   }
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TextInput, StyleSheet, ImageBackground, Keyboard, Image } from "react-native";
+import { View, Text, TextInput, StyleSheet, ImageBackground, Keyboard, Image, AsyncStorage } from "react-native";
 import { connect } from "react-redux";
 import { userNameChanged, passwordChanged, loginUser } from "../actions";
 import { Actions } from "react-native-router-flux";
@@ -10,6 +10,10 @@ class LoginForm extends Component {
 
   constructor(props){
     super(props);
+  }
+
+  componentDidMount(){
+    
   }
 
   onButtonPress() {

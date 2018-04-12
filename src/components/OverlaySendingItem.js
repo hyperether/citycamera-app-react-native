@@ -9,7 +9,7 @@ const OverlaySendingItem = ({ imagePath }) => {
       <Image
         source={imagePath}
         style={imageStyle} />
-        <Text style={textStyle}>Sending...</Text>
+        {/* <Text style={textStyle}>Sending...</Text> */}
     </View>
   );
 };
