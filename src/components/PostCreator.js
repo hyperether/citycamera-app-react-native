@@ -56,9 +56,11 @@ class PostCreator extends Component {
     console.log("Description:", this.props.description);
     console.log("Longitude: ", this.props.longitude);
     console.log("Latitude: ", this.props.latitude);
+    toast_for_ios
     console.log("User je:", Session.getUser());
 
     Toast.show("Sending...", Toast.LONG);
+
     this.setState( { sending: true });
     this.disableAllMenutItems();
     setInterval(() => {

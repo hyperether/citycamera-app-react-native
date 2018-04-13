@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import API from "../services/API";
+import Session from "../services/Session";
 import { View, Text, TextInput, StyleSheet, ImageBackground, Keyboard, Image, AsyncStorage} from "react-native";
 import { connect } from "react-redux";
 import { userNameChanged, passwordChanged, loginUser } from "../actions";
@@ -14,15 +15,23 @@ class LoginForm extends Component {
   }
 
   componentDidMount(){
-    AsyncStorage.getItem("user")
-      .then((user)=>{
-        var currentUser = JSON.parse(user);
-        if(currentUser){
-          this.props.userNameChanged(currentUser.username)
-          this.props.passwordChanged(currentUser.password)
+    AsyncStorage.getItem("token")
+      .then((token)=>{
+        // var token = JSON.parse(token);
+        // if(currentUser){
+        //   this.props.userNameChanged(currentUser.username)
+        //   this.props.passwordChanged(currentUser.password)
          
-          const { userName, password } = this.props;
-          this.props.loginUser({userName, password}) //<--from mapStateToProps
+        //   const { userName, password } = this.props;
+        //   this.props.loginUser({userName, password}) //<--from mapStateToProps
+        // }
+
+        if(token){
+          AsyncStorage.getItem("user")
+          .then((user)=>{
+            Session.save(JSON.parse(user), token);
+            Actions.postCreator(); 
+          });
         }
       })
       .catch(err => {
