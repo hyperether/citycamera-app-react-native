@@ -127,7 +127,15 @@ const logOutJump = (dispatch) => {
   dispatch({type: LOGOUT});  
   Actions.pop();
   AsyncStorage.removeItem('user', (err) =>{
-    console.log('user loged out', err)
+    if(err){
+      console.log( err)
+    }
+    //TODO obrisi i token
+  });
+  AsyncStorage.removeItem('token', (err) =>{
+    if(err){
+      console.log(err)
+    }
   });
   Session.delete(); 
  };

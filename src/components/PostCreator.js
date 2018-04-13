@@ -56,7 +56,6 @@ class PostCreator extends Component {
     console.log("Description:", this.props.description);
     console.log("Longitude: ", this.props.longitude);
     console.log("Latitude: ", this.props.latitude);
-    console.log("User je:", Session.getUser());
     
     ToastAndroid.show("Sending...", ToastAndroid.SHORT);
     this.setState( { sending: true });
