@@ -49,14 +49,13 @@ class PostCreator extends Component {
 
   onSendPress(){
 
-    //Podaci prosledjeni iz redux-a
+    //Data from redux
     console.log("Image name:", this.props.imageName);
     console.log("Image path:", this.props.imagePath);
     console.log("Image extension:", this.props.imageExtension);
     console.log("Description:", this.props.description);
     console.log("Longitude: ", this.props.longitude);
     console.log("Latitude: ", this.props.latitude);
-    toast_for_ios
     console.log("User je:", Session.getUser());
 
     Toast.show("Sending...", Toast.LONG);
@@ -70,8 +69,6 @@ class PostCreator extends Component {
         };
       });
     }, 200);
-
-
 
     var uploadURL, fileId;
 
