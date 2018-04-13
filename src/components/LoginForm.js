@@ -20,9 +20,9 @@ class LoginForm extends Component {
         if(currentUser){
           this.props.userNameChanged(currentUser.username)
           this.props.passwordChanged(currentUser.password)
-          API.login(this.props.userName, this.props.password).
-            then (Actions.postCreator())
-          // this.props.userLogedIn(currentUser.token)
+         
+          const { userName, password } = this.props;
+          this.props.loginUser({userName, password}) //<--from mapStateToProps
         }
       })
       .catch(err => {
