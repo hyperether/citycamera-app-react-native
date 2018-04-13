@@ -1,7 +1,7 @@
 import API from "../services/API";
 import Session from "../services/Session";
 import { Actions } from "react-native-router-flux";
-import { AsyncStorage, ToastAndroid, Alert } from "react-native";
+import { AsyncStorage, Alert } from "react-native";
 import {
   USERNAME_CHANGED,
   EMAIL_CHANGED,
@@ -41,17 +41,17 @@ export const passwordChanged = text => {
 
 // export const loginUser = ({ userName, password }) => {
   //   console.log({ userName, password });
-  
+
   //   return dispatch => {
   //     // disptach({type: LOGIN_USER});cs
-  
+
   //     API.login(userName, password)
   //       .then(response => {
   //         dispatch({ type: "LOGIN_USER_SUCCESS", payload: response });
-  
+
   //         try {
   //           AsyncStorage.setItem("user", JSON.stringify(response.data.user))
-  
+
   //             .then(() => {
   //               AsyncStorage.setItem(
   //                 "token",
@@ -60,7 +60,7 @@ export const passwordChanged = text => {
   //                 console.log('User login data saved in storage');
   //                 Session.save(response.data.user, response.data.token);
   //                 console.log('User session',Session.getUser());
-  //                 Actions.postCreator();            
+  //                 Actions.postCreator();
   //               });
   //             })
   //             .catch(() => {
@@ -75,11 +75,11 @@ export const passwordChanged = text => {
   //       });
   //   };
   // };
-  
+
 
 export const loginUser = ({ userName, password }) => {
   return (dispatch) => {
-    dispatch({ type: LOGIN_USER })    
+    dispatch({ type: LOGIN_USER })
     API.login(userName, password)
       .then(response => {
         try {
@@ -88,14 +88,14 @@ export const loginUser = ({ userName, password }) => {
               AsyncStorage.setItem("token", JSON.stringify(response.data.token))
               .then((data) => {
                   Session.save(response.data.user, response.data.token);
-  
+
                   loginUserSuccess(dispatch, response.data.user);
-                  Actions.postCreator(); 
+                  Actions.postCreator();
                   //for reseting all fields on login
                   dispatch({type: LOGOUT})
 
               });
-            }).catch(() => {  
+            }).catch(() => {
                 console.log("Error saving credentials.");
               });
         } catch (error) {
@@ -124,7 +124,7 @@ const loginUserFail = (dispatch) => {
 };
 
 const logOutJump = (dispatch) => {
-  dispatch({type: LOGOUT});  
+  dispatch({type: LOGOUT});
   Actions.pop();
   AsyncStorage.removeItem('user', (err) =>{
     if(err){
@@ -137,7 +137,7 @@ const logOutJump = (dispatch) => {
       console.log(err)
     }
   });
-  Session.delete(); 
+  Session.delete();
  };
 
 export const logOut = (logOut) => {
@@ -152,10 +152,10 @@ export const logOut = (logOut) => {
       { cancelable: false }
     )
   }
-  
+
 }
 
- 
+
 
 export const registerUser = ({ userName, email, password }) => {
   console.log({ userName, email, password });

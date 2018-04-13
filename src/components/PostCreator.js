@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import { View, ToastAndroid, Text, BackHandler, AsyncStorage} from "react-native";
+import { View, Text, BackHandler, AsyncStorage} from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { Actions } from "react-native-router-flux";
+import Toast from 'react-native-simple-toast';
 import ImageMenuItem from "./ImageMenuItem";
 import { Footer } from "./common";
 import TouchableMenuItem from "./TouchableMenuItem";
 import OverlayChooserItem from "./OverlayChooserItem";
-import OverlaySendingItem from "./OverlaySendingItem";
 import API from "../services/API";
 import Session from "../services/Session";
 import {loginUser, imageAdded, descriptionAdded, addLocation, postSent, logOut} from "../actions";
@@ -17,11 +17,11 @@ class PostCreator extends Component {
   constructor(props) {
     super(props);
     this.state = { sending: false, spinnerOn: false };
-   
+
   }
 
   // componentDidMount(){
-  //   BackHandler.addEventListener('hardwareBackPress', () => this.exitingApp())    
+  //   BackHandler.addEventListener('hardwareBackPress', () => this.exitingApp())
   // }
 
   // exitingApp(){
@@ -56,8 +56,11 @@ class PostCreator extends Component {
     console.log("Description:", this.props.description);
     console.log("Longitude: ", this.props.longitude);
     console.log("Latitude: ", this.props.latitude);
-    
-    ToastAndroid.show("Sending...", ToastAndroid.SHORT);
+    toast_for_ios
+    console.log("User je:", Session.getUser());
+
+    Toast.show("Sending...", Toast.LONG);
+
     this.setState( { sending: true });
     this.disableAllMenutItems();
     setInterval(() => {
@@ -68,7 +71,7 @@ class PostCreator extends Component {
       });
     }, 200);
 
-     
+
 
     var uploadURL, fileId;
 
@@ -87,11 +90,11 @@ class PostCreator extends Component {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
             this.setState({ sending: false });
-            ToastAndroid.show("Successfully uploaded the file.", ToastAndroid.LONG);
+            Toast.show("Successfully uploaded the file.", Toast.LONG);
             this.resetAllStates();
           } else {
             this.setState({ sending: false });
-            ToastAndroid.show("The file could not be uploaded.", ToastAndroid.LONG);
+            Toast.show("The file could not be uploaded.", Toast.LONG);
 
           }
         }
@@ -118,13 +121,13 @@ class PostCreator extends Component {
     if (this.state.sending) {
       if (this.state.spinnerOn) {
         return (
-          <OverlaySendingItem
+          <OverlayChooserItem
             imagePath={require("../assets/images/square.png")}
           />
         );
       } else {
         return (
-          <OverlaySendingItem
+          <OverlayChooserItem
             imagePath={require("../assets/images/square_rotate.png")}
           />
         );
