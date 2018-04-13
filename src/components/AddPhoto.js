@@ -6,9 +6,9 @@ import {
   Image,
   TouchableOpacity,
   AsyncStorage,
-  ToastAndroid
 } from "react-native";
 import ImagePicker from "react-native-image-picker";
+import Toast from 'react-native-simple-toast';
 import { imageAdded } from "../actions";
 
 class AddPhoto extends Component {
@@ -37,7 +37,7 @@ class AddPhoto extends Component {
     ImagePicker.launchImageLibrary(options, response => {
       try {
         AsyncStorage.getItem("user").then((err, user) => {
-          // ToastAndroid.show('Loaded User !' + user, ToastAndroid.LONG);
+          // Toast.show('Loaded User !' + user, Toast.LONG);
 
           if (response.didCancel) {
             console.log("User cancelled image picker");
@@ -46,16 +46,17 @@ class AddPhoto extends Component {
           } else if (response.customButton) {
             console.log("User tapped custom button: ", response.customButton);
           } else {
+            Toast.show('Image selected', Toast.SHORT);
             this.getImageExtension(response.path)
-            let source = { 
+            let source = {
               path: response.path,
-              name: response.fileName, 
+              name: response.fileName,
               extension: this.state.imageExtension
             };
             // console.log("Android path ",response.path);
             // console.log("IOS path ",response.origURL); <-- see documentacion.
             this.props.imageAdded(source);
-            
+
             Actions.pop();
           }
         });
@@ -83,14 +84,15 @@ class AddPhoto extends Component {
           } else if (response.customButton) {
             console.log("User tapped custom button: ", response.customButton);
           } else {
-            this.getImageExtension(response.path);            
-            let source = { 
+            Toast.show('Image added', Toast.SHORT);
+            this.getImageExtension(response.path);
+            let source = {
               path: response.path,
-              name: response.fileName, 
+              name: response.fileName,
               extension: this.state.imageExtension
             };
             this.props.imageAdded(source); //-sending image to action imageAdded
-            
+
             Actions.pop();
           }
         });

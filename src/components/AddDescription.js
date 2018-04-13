@@ -1,19 +1,18 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import { 
-  View, 
-  Image, 
-  TouchableOpacity, 
-  AsyncStorage, 
-  ToastAndroid,
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  AsyncStorage,
   TextInput
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { descriptionAdded } from '../actions';
 
 class AddDescription extends Component {
-  
+
   onDescritpionAdded(text){
     this.props.descriptionAdded(text)
   };
@@ -30,11 +29,11 @@ class AddDescription extends Component {
       touchableStyle,
       smallImageStyle
     } = styles;
-    
+
     return (
-      <View 
+      <View
         style={menuItemsContainerStyle}>
-          <TextInput 
+          <TextInput
             multiline={true}
             numberOfLines={10}
             placeholder={'Enter your description here.'}
@@ -43,7 +42,7 @@ class AddDescription extends Component {
             style={textInputStyle}
           />
         <View style={buttonsContainer}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={touchableStyle}
               onPress={()=> {Actions.pop()}}
               >
@@ -52,7 +51,7 @@ class AddDescription extends Component {
                 source={require('../assets/images/yes1.png')}
                 // resizeMode='contain'
               />
-            </TouchableOpacity>            
+            </TouchableOpacity>
           </View>
       </View>
     );
@@ -61,7 +60,7 @@ class AddDescription extends Component {
 
 
 const styles = {
-  
+
   menuItemsContainerStyle: {
     flex: 1,
     paddingVertical: 15,
@@ -76,11 +75,11 @@ const styles = {
     justifyContent: 'center',
     alignContent: 'flex-start',
   },
-  
+
   touchableStyle:{
     paddingHorizontal: 20
   },
-  
+
   smallImageStyle: {
     height: 50,
     width: 100,
