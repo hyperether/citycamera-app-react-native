@@ -1,7 +1,8 @@
 import {
      USERNAME_CHANGED,
      EMAIL_CHANGED,
-     PASSWORD_CHANGED, 
+     PASSWORD_CHANGED,
+     LOGIN_USER_SUCCESS, 
      LOGIN_USER_FAIL,
      LOGIN_USER,
      LOGOUT
@@ -12,7 +13,8 @@ const INITIAL_STATE = { //<---default podesavanja. Prazni stringovi.
     password: '',
     email: '',
     error:'',
-    loading: false
+    loading: false,
+    logedIn: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -29,7 +31,10 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, password: action.payload};
         
         case LOGIN_USER:
-            return {...state, loading: true, error:''};
+            return {...state, loading: true, error:'', logedIn: true};
+       
+        case LOGIN_USER_SUCCESS:
+            return {... state, user: action.user, token: action.token}
 
         case LOGIN_USER_FAIL:
             return {...state, error: 'Authentication failed.', loading:false};

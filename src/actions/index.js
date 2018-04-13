@@ -39,8 +39,6 @@ export const passwordChanged = text => {
   };
 };
 
-
-
 // export const loginUser = ({ userName, password }) => {
   //   console.log({ userName, password });
   
@@ -109,12 +107,14 @@ export const loginUser = ({ userName, password }) => {
         loginUserFail(dispatch);
       });
   };
+
 };
 
-const loginUserSuccess = (dispatch, user) => {
+const loginUserSuccess = (dispatch, user, token) => {
   dispatch({
       type: LOGIN_USER_SUCCESS,
-      payload: user
+      user: user,
+      token: token
   });
 }
 const loginUserFail = (dispatch) => {
@@ -126,6 +126,9 @@ const loginUserFail = (dispatch) => {
 const logOutJump = (dispatch) => {
   dispatch({type: LOGOUT});  
   Actions.pop();
+  AsyncStorage.removeItem('user', (err) =>{
+    console.log('user loged out', err)
+  });
   Session.delete(); 
  };
 

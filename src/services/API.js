@@ -29,6 +29,7 @@ axios.interceptors.response.use(function (response) {
   class API  {
 
        login(userName, password){
+         console.log('kredencijali su', userName, password)
             return axios.post(SERVER_URL+'/user/login', {
                 username: userName,
                 password: password

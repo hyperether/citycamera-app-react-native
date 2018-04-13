@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ToastAndroid, Text, BackHandler, AsyncStorage } from "react-native";
+import { View, ToastAndroid, Text, BackHandler, AsyncStorage} from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { Actions } from "react-native-router-flux";
@@ -17,12 +17,17 @@ class PostCreator extends Component {
   constructor(props) {
     super(props);
     this.state = { sending: false, spinnerOn: false };
-    // console.log("props je", props)
-    // console.log('login user', this.props.loginUser)
-    AsyncStorage.getItem("isLogedIn").then((response) => {console.log("Da li je logovan: ", response)})
-    
+   
   }
 
+  // componentDidMount(){
+  //   BackHandler.addEventListener('hardwareBackPress', () => this.exitingApp())    
+  // }
+
+  // exitingApp(){
+  //   BackHandler.exitApp();
+  //   return true
+  // }
 
   logOutAlert(){
     Alert.alert(
@@ -272,6 +277,7 @@ class PostCreator extends Component {
       description: state.post.description,
       longitude: state.post.longitude,
       latitude: state.post.latitude,
+      logedIn: state.auth.logedIn
     };
   };
 

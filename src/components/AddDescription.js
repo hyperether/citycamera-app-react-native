@@ -13,7 +13,10 @@ import ImagePicker from 'react-native-image-picker';
 import { descriptionAdded } from '../actions';
 
 class AddDescription extends Component {
-
+  
+  componentDidMount(){
+    BackHandler.addEventListener('hardwareBackPress', () => Actions.pop())    
+  }
   onDescritpionAdded(text){
     this.props.descriptionAdded(text)
   };

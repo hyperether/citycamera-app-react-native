@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { View, Text, TextInput, StyleSheet, ImageBackground, Keyboard, Image, AsyncStorage } from "react-native";
+import API from "../services/API";
+import { View, Text, TextInput, StyleSheet, ImageBackground, Keyboard, Image, AsyncStorage} from "react-native";
 import { connect } from "react-redux";
 import { userNameChanged, passwordChanged, loginUser } from "../actions";
 import { Actions } from "react-native-router-flux";
@@ -13,7 +14,20 @@ class LoginForm extends Component {
   }
 
   componentDidMount(){
-    
+    AsyncStorage.getItem("user")
+      .then((user)=>{
+        var currentUser = JSON.parse(user);
+        if(currentUser){
+          this.props.userNameChanged(currentUser.username)
+          this.props.passwordChanged(currentUser.password)
+          API.login(this.props.userName, this.props.password).
+            then (Actions.postCreator())
+          // this.props.userLogedIn(currentUser.token)
+        }
+      })
+      .catch(err => {
+      console.log(err)
+    })
   }
 
   onButtonPress() {
@@ -168,7 +182,8 @@ const mapStateToProps = state => {
     userName: state.auth.userName, //<--iz AuthReducer-a
     password: state.auth.password,
     error: state.auth.error,
-    loading: state.auth.loading
+    loading: state.auth.loading,
+    logedIn: state.auth.logedIn
   };
 };
 
