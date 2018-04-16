@@ -90,6 +90,7 @@ class LoginForm extends Component {
               <TextInput 
                 style={styles.input} 
                 placeholder="username" 
+                autoCapitalize = 'none'
                 placeholderTextColor= "white"                
                 underlineColorAndroid="transparent"
                 onChangeText={this.onUserNameChange.bind(this)}
@@ -99,6 +100,7 @@ class LoginForm extends Component {
                 style={styles.input} 
                 secureTextEntry
                 placeholder="password" 
+                autoCapitalize = 'none'
                 placeholderTextColor= "white"
                 underlineColorAndroid="transparent"
                 onChangeText={this.onPasswordChange.bind(this)}

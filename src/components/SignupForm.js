@@ -65,6 +65,7 @@ class SignupForm extends Component {
               style={styles.input}
               placeholder="username"
               placeholderTextColor="white"
+              autoCapitalize = 'none'              
               underlineColorAndroid="transparent"
               onChangeText={this.onUserNameChange.bind(this)}
               value={this.props.userName} //<-- iz mapStateToPropsa(iz reducera)
@@ -74,6 +75,7 @@ class SignupForm extends Component {
               style={styles.input}
               placeholder="email"
               placeholderTextColor="white"
+              autoCapitalize = 'none'              
               underlineColorAndroid="transparent"
               onChangeText={this.onEmailChange.bind(this)}
               value={this.props.email} //<-- iz mapStateToPropsa(iz reducera)
@@ -84,6 +86,7 @@ class SignupForm extends Component {
               secureTextEntry
               placeholder="password"
               placeholderTextColor="white"
+              autoCapitalize = 'none'              
               underlineColorAndroid="transparent"
               onChangeText={this.onPasswordChange.bind(this)}
               value={this.props.password} //<-- iz mapStateToPropsa
