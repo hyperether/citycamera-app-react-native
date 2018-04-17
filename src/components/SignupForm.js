@@ -17,10 +17,15 @@ import {
 } from "../actions";
 import { Button, Card, CardSection, Input, Spinner } from "./common";
 import backgroundImage from "../assets/images/bg.jpg";
+import ValidationComponent from 'react-native-form-validator';
 
-class SignupForm extends Component {
+class SignupForm extends ValidationComponent {
   onButtonPress() {
     const { userName, email, password } = this.props;
+    // this.validate({
+    //   email:{email: true}
+    // })
+    // console.log('Validacija ', this.getErrorMessages())
     this.props.registerUser({ userName, email, password });
   }
 
@@ -145,7 +150,8 @@ const mapStateToProps = state => {
   return {
     userName: state.auth.userName,
     email: state.auth.email,
-    password: state.auth.password
+    password: state.auth.password,
+    error: state.auth.error,    
   };
 };
 
