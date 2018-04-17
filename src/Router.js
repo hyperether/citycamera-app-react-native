@@ -26,7 +26,6 @@ class RouterComponent extends Component  {
           <Image
                   source={require('./assets/images/exit.png')}
                   resizeMode={'contain'}/>
-          {/* <Text>Back</Text> */}
         </View>
       </TouchableOpacity>
     );
@@ -39,27 +38,28 @@ class RouterComponent extends Component  {
           <Scene
             hideNavBar
             key="login"
+            type="reset"
             title="Welcome to CityCam"
             component={LoginForm}
             initial
           />
-          <Scene 
-            key="signup" 
-            title="Please signup" 
-            component={SignupForm} 
+          <Scene
+            key="signup"
+            title="Please signup"
+            component={SignupForm}
           />
-  
-  
-          {/* <Scene key="main"> */}
-            <Scene						
+
+
+            <Scene
               key="postCreator"
+              type="reset"
               title="Create a new post"
               component={PostCreator}
               renderBackButton={this.renderBackButton}
             />
-            <Scene 
-              key="addPhoto" 
-              title="Add a photo" 
+            <Scene
+              key="addPhoto"
+              title="Add a photo"
               component={AddPhoto} />
             <Scene
               key="addLocation"
@@ -71,13 +71,12 @@ class RouterComponent extends Component  {
               title="Add description"
               component={AddDescription}
             />
-          {/* </Scene> */}
         </Scene>
       </Router>
     );
   };
 }
-  
+
 const mapDispatchToProps = dispatch => {
   return{
     loginUser: bindActionCreators(loginUser, dispatch),
