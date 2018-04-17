@@ -125,7 +125,6 @@ const loginUserFail = (dispatch) => {
 
 const logOutJump = (dispatch) => {
   dispatch({type: LOGOUT});
-  Actions.pop();
   AsyncStorage.removeItem('user', (err) =>{
     if(err){
       console.log( err)
@@ -138,6 +137,7 @@ const logOutJump = (dispatch) => {
     }
   });
   Session.delete();
+  Actions.login();
  };
 
 export const logOut = (logOut) => {
