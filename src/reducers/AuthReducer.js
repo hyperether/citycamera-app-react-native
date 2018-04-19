@@ -40,7 +40,7 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, error: 'Authentication failed.', loading:false};
         
         case LOGOUT:
-            return {...state, loading: false, error:'', password: '', userName: ''}
+            return {...state, loading: false, error:'', password: '', userName: '', email: ''}
     
         default:
             return state;

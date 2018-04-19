@@ -17,6 +17,7 @@ import {
   POST_SENT
 } from "./types";
 import PostCreator from "../components/PostCreator";
+import Toast from "react-native-simple-toast";
 
 export const userNameChanged = text => {
   return {
@@ -163,11 +164,14 @@ export const registerUser = ({ userName, email, password }) => {
     API.register(userName, email, password)
       .then(user => {
         dispatch({ type: "REGISTER_USER_SUCCESS", payload: user });
-        console.log("sucess register", user);
+        Toast.show("Registration successful.", Toast.LONG);
         Actions.login();
+        //for reseting all fields on login
+        dispatch({type: LOGOUT})
       })
       .catch(error => {
-        console.log("Registracija nije uspela: " + error);
+        Toast.show("Username is already in use. Please try again with diferent username.", Toast.LONG);
+        console.log("Registration failed." + error);
       });
   };
 };
