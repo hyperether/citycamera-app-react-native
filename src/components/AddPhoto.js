@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   AsyncStorage,
+  Platform
 } from "react-native";
 import ImagePicker from "react-native-image-picker";
 import Toast from 'react-native-simple-toast';
@@ -47,12 +48,13 @@ class AddPhoto extends Component {
             console.log("User tapped custom button: ", response.customButton);
           } else {
             Toast.show('Image selected', Toast.SHORT);
-            this.getImageExtension(response.path)
+            Platform.OS === 'android' ? this.getImageExtension(response.path) : this.getImageExtension(response.origURL)
             let source = {
-              path: response.path,
+              path: Platform.OS === 'android' ? response.path : response.origURL,
               name: response.fileName,
               extension: this.state.imageExtension
             };
+            console.log('Putanja je', source.path)
             // console.log("Android path ",response.path);
             // console.log("IOS path ",response.origURL); <-- see documentacion.
             this.props.imageAdded(source);
@@ -85,9 +87,9 @@ class AddPhoto extends Component {
             console.log("User tapped custom button: ", response.customButton);
           } else {
             Toast.show('Image added', Toast.SHORT);
-            this.getImageExtension(response.path);
+            Platform.OS === 'android' ? this.getImageExtension(response.path) : this.getImageExtension(response.origURL)            
             let source = {
-              path: response.path,
+              path: Platform.OS === 'android' ? response.path : response.origURL,
               name: response.fileName,
               extension: this.state.imageExtension
             };
