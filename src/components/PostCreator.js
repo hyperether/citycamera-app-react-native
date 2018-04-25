@@ -20,15 +20,6 @@ class PostCreator extends Component {
 
   }
 
-  // componentDidMount(){
-  //   BackHandler.addEventListener('hardwareBackPress', () => this.exitingApp())
-  // }
-
-  // exitingApp(){
-  //   BackHandler.exitApp();
-  //   return true
-  // }
-
   logOutAlert(){
     Alert.alert(
       'Log Out',

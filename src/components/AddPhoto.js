@@ -19,6 +19,7 @@ class AddPhoto extends Component {
       imageExtension: ""
     };
   }
+  
   getImageExtension(imagePath) {
     let position = imagePath.indexOf(".") + 1;
     let extension = imagePath.substring(position);
@@ -48,15 +49,12 @@ class AddPhoto extends Component {
             console.log("User tapped custom button: ", response.customButton);
           } else {
             Toast.show('Image selected', Toast.SHORT);
-            Platform.OS === 'android' ? this.getImageExtension(response.path) : this.getImageExtension(response.origURL)
+            this.getImageExtension(response.uri) 
             let source = {
-              path: Platform.OS === 'android' ? response.path : response.origURL,
+              path: response.uri,
               name: response.fileName,
               extension: this.state.imageExtension
             };
-            console.log('Putanja je', source.path)
-            // console.log("Android path ",response.path);
-            // console.log("IOS path ",response.origURL); <-- see documentacion.
             this.props.imageAdded(source);
 
             Actions.pop();
@@ -87,9 +85,11 @@ class AddPhoto extends Component {
             console.log("User tapped custom button: ", response.customButton);
           } else {
             Toast.show('Image added', Toast.SHORT);
-            Platform.OS === 'android' ? this.getImageExtension(response.path) : this.getImageExtension(response.origURL)            
+            // Platform.OS === 'android' ? this.getImageExtension(response.path) : this.getIosImageExtension(response.origURL) 
+            this.getImageExtension(response.uri)
             let source = {
-              path: Platform.OS === 'android' ? response.path : response.origURL,
+              // path: Platform.OS === 'android' ? response.path : response.origURL,
+              path: response.uri,
               name: response.fileName,
               extension: this.state.imageExtension
             };
